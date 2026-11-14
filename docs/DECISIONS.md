@@ -115,6 +115,12 @@ Statut : ✅ validé · 🟡 provisoire (à confirmer) · ❓ ouvert
 | 75  | Domaine                | Aucun : adresse gratuite fournie par l'hébergeur                                                          | ✅     |
 | 76  | Sprint 1               | Lancé                                                                                                     | ✅     |
 
+## Série 8 — Design du site public (2026-11-15)
+
+| #   | Sujet        | Décision                                                                                                       | Statut |
+| --- | ------------ | -------------------------------------------------------------------------------------------------------------- | ------ |
+| 77  | Typographies | Barlow Condensed (titres, scores, capitales) et Inter (texte, tableaux, chiffres tabulaires) via next/font ; voir DESIGN_PUBLIC.md | 🟡     |
+
 ## Points encore ouverts
 
 - Remise à zéro des jaunes en fin de saison (hypothèse : oui)

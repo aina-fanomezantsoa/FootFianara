@@ -15,19 +15,20 @@
   --color-border: var(--border);
   --color-muted: var(--muted);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-barlow);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
 /* Titres condensés en capitales, chiffres tabulaires pour scores et classements. */
 .title-sport {
-  font-weight: 800;
+  font-family: var(--font-barlow), Arial, sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: -0.02em;
   line-height: 1.05;
@@ -35,6 +36,12 @@ body {
 
 .num {
   font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }
 
 :focus-visible {

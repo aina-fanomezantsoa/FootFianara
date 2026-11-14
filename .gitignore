@@ -44,3 +44,6 @@ next-env.d.ts
 /generated/prisma
 .env
 !.env.example
+
+# Sauvegardes de la base (données réelles, jamais commitées)
+/backups/

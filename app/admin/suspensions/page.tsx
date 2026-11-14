@@ -26,13 +26,20 @@ function parseManuelle(f: FormData): Valid<Manuelle> {
   return { data: { playerId, matchesTotal, reason } };
 }
 
-// BR-31 : suspension décidée par la fédération, sans saison ni match (conservée par syncSuspensions).
+// BR-31 : suspension décidée par la fédération, rattachée à la saison la plus récente, sans match
+// (matchId null : conservée par syncSuspensions).
 async function enregistrer(f: FormData) {
   "use server";
   const v = parseManuelle(f);
-  await ecrire(CH, v, () =>
-    db.suspension.create({ data: (v as { data: Manuelle }).data }),
-  );
+  await ecrire(CH, v, async () => {
+    const saison = await db.season.findFirst({
+      orderBy: { startDate: "desc" },
+      select: { id: true },
+    });
+    await db.suspension.create({
+      data: { ...(v as { data: Manuelle }).data, seasonId: saison?.id },
+    });
+  });
 }
 
 async function purger(f: FormData) {

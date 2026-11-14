@@ -203,3 +203,27 @@ export async function declareForfeit(
   revalidatePublic();
   return { ok: true };
 }
+
+/** Annule un forfait déclaré par erreur : le match redevient programmé, sans score. ADMIN. */
+export async function cancelForfeit(matchId: number): Promise<ActionResult> {
+  const user = await requireRole("ADMIN");
+  const m = await db.match.findUnique({
+    where: { id: matchId },
+    select: { seasonId: true, status: true },
+  });
+  if (!m) return { erreur: "Match introuvable." };
+  if (m.status !== "FORFEIT")
+    return { erreur: "Ce match n'est pas déclaré forfait." };
+  await db.match.update({
+    where: { id: matchId },
+    data: {
+      homeGoals: null,
+      awayGoals: null,
+      status: "SCHEDULED",
+      updatedById: Number(user.id),
+    },
+  });
+  await syncSuspensions(m.seasonId);
+  revalidatePublic();
+  return { ok: true };
+}

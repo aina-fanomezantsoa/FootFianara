@@ -19,7 +19,19 @@ import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { MAX_STARTERS } from "@/lib/lineups";
 import { hasRole } from "@/lib/roles";
-import { composer, programmer } from "../actions";
+import {
+  annulerForfait,
+  composer,
+  programmer,
+  type CodeOk,
+} from "../actions";
+
+const SUCCES: Record<CodeOk, string> = {
+  programme: "Programmation enregistrée.",
+  forfait: "Forfait enregistré.",
+  "forfait-annule": "Forfait annulé : le match est de nouveau programmé.",
+  compo: "Compositions enregistrées.",
+};
 
 const effectif = {
   select: {
@@ -110,9 +122,9 @@ export default async function Match({
         )}
       </header>
       <Alerte>{erreur}</Alerte>
-      {ok && (
+      {ok && ok in SUCCES && (
         <p role="status" className="font-semibold">
-          {ok}
+          {SUCCES[ok as CodeOk]}
         </p>
       )}
 
@@ -202,6 +214,17 @@ export default async function Match({
         <Card>
           <h2 className="title-sport mb-3 text-lg">Forfait</h2>
           <ForfaitDialog matchId={m.id} home={home.nom} away={away.nom} />
+          {m.status === "FORFEIT" && (
+            <form action={annulerForfait} className="mt-3">
+              <input type="hidden" name="matchId" value={m.id} />
+              <Button type="submit" variant="secondary" className="w-full">
+                Annuler le forfait
+              </Button>
+              <p className="mt-1 text-sm text-muted">
+                Le match redevient programmé, sans score.
+              </p>
+            </form>
+          )}
         </Card>
       )}
 

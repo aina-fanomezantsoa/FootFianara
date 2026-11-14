@@ -123,7 +123,7 @@ export async function syncSuspensions(seasonId: number) {
 }
 
 /**
- * Suspensions non purgées : automatiques de la saison + manuelles (BR-31, sans saison).
+ * Suspensions non purgées : automatiques et manuelles de la saison + manuelles sans saison (BR-31).
  * playerId facultatif pour la fiche joueur.
  */
 export function getActiveSuspensions(seasonId: number, playerId?: number) {

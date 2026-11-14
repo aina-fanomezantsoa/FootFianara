@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireRole } from "@/lib/auth";
 
 export default async function Admin({
@@ -19,10 +20,12 @@ export default async function Admin({
         </a>
       )}
       {user.role !== "ASSISTANT" && (
-        <nav className="flex gap-4 underline">
-          <a href="/admin/saisons">Saisons</a>
-          <a href="/admin/divisions">Divisions</a>
-          <a href="/admin/stades">Stades</a>
+        <nav className="flex flex-wrap gap-x-4 underline [&>a]:inline-flex [&>a]:min-h-11 [&>a]:items-center">
+          <Link href="/admin/saisons">Saisons</Link>
+          <Link href="/admin/divisions">Divisions</Link>
+          <Link href="/admin/stades">Stades</Link>
+          <Link href="/admin/clubs">Clubs</Link>
+          <Link href="/admin/joueurs">Joueurs</Link>
         </nav>
       )}
       {refuse && (

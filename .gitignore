@@ -47,3 +47,5 @@ next-env.d.ts
 
 # Worktrees des agents Claude
 .claude/worktrees/
+# Sauvegardes de la base (données réelles, jamais commitées)
+/backups/

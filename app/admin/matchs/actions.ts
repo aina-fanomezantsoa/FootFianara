@@ -1,12 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { requireRole } from "@/lib/auth";
 import { saveCalendar } from "@/lib/calendar-db";
 import { parseLineup, saveLineup } from "@/lib/lineups";
 import { parseSchedule, updateSchedule } from "@/lib/match-admin";
 import {
+  cancelForfeit,
   declareForfeit,
   parseResultat,
   saveResult,
@@ -15,28 +15,22 @@ import {
 
 const fiche = (id: number) => `/admin/matchs/${id}`;
 
+/** Codes de succès traduits par la page du match (?ok=code). */
+export type CodeOk = "programme" | "forfait" | "forfait-annule" | "compo";
+
 // Les fonctions de lib/ renvoient { erreur } | { ok } ; la page affiche le message via l'URL.
-function retour(chemin: string, r: ActionResult, ok: string) {
-  const q =
-    "erreur" in r
-      ? `erreur=${encodeURIComponent(r.erreur)}`
-      : `ok=${encodeURIComponent(ok)}`;
-  redirect(`${chemin}?${q}`);
+function retour(chemin: string, r: ActionResult, ok: CodeOk) {
+  redirect(
+    `${chemin}?${"erreur" in r ? `erreur=${encodeURIComponent(r.erreur)}` : `ok=${ok}`}`,
+  );
 }
 
 export async function genererCalendrier(f: FormData) {
-  await requireRole("ADMIN");
   const seasonId = Number(f.get("seasonId"));
   const divisionId = Number(f.get("divisionId"));
   const chemin = `/admin/matchs?saison=${seasonId}&division=${divisionId}`;
-  let erreur = "";
-  try {
-    await saveCalendar(seasonId, divisionId);
-  } catch (e) {
-    erreur = e instanceof Error ? e.message : "Génération impossible.";
-  }
-  revalidatePath("/", "layout");
-  redirect(erreur ? `${chemin}&erreur=${encodeURIComponent(erreur)}` : chemin);
+  const r = await saveCalendar(seasonId, divisionId);
+  redirect("erreur" in r ? `${chemin}&erreur=${encodeURIComponent(r.erreur)}` : chemin);
 }
 
 /** Pour useActionState : l'erreur revient au formulaire client sans perdre la saisie. */
@@ -60,7 +54,7 @@ export async function programmer(f: FormData) {
   retour(
     fiche(id),
     "erreur" in v ? v : await updateSchedule(id, v.data),
-    "Programmation enregistrée.",
+    "programme",
   );
 }
 
@@ -73,8 +67,13 @@ export async function forfait(f: FormData) {
     fautif === "HOME" || fautif === "AWAY"
       ? await declareForfeit(id, fautif)
       : { erreur: "Choisissez le club forfait." },
-    "Forfait enregistré.",
+    "forfait",
   );
+}
+
+export async function annulerForfait(f: FormData) {
+  const id = Number(f.get("matchId"));
+  retour(fiche(id), await cancelForfeit(id), "forfait-annule");
 }
 
 export async function composer(f: FormData) {
@@ -84,6 +83,6 @@ export async function composer(f: FormData) {
   retour(
     fiche(id),
     "erreur" in v ? v : await saveLineup(id, v.data),
-    "Compositions enregistrées.",
+    "compo",
   );
 }

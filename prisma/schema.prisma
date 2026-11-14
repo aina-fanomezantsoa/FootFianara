@@ -38,12 +38,13 @@ model User {
 }
 
 model Season {
-  id        Int          @id @default(autoincrement())
-  name      String
-  startDate DateTime
-  endDate   DateTime
-  clubs     ClubSeason[]
-  matches   Match[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  clubs       ClubSeason[]
+  matches     Match[]
+  suspensions Suspension[]
 }
 
 model Division {
@@ -86,21 +87,21 @@ model ClubSeason {
 }
 
 model Player {
-  id           Int           @id @default(autoincrement())
-  firstName    String
-  lastName     String
-  photoUrl     String?
-  position     String?
-  birthDate    DateTime?
-  heightCm     Int?
-  strongFoot   String?
-  nationality  String?
-  squads       Squad[]
-  lineups      Lineup[]
-  events       MatchEvent[]  @relation("EventPlayer")
-  assists      MatchEvent[]  @relation("EventAssist")
-  subsIn       MatchEvent[]  @relation("EventPlayerIn")
-  suspensions  Suspension[]
+  id          Int          @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  photoUrl    String?
+  position    String?
+  birthDate   DateTime?
+  heightCm    Int?
+  strongFoot  String?
+  nationality String?
+  squads      Squad[]
+  lineups     Lineup[]
+  events      MatchEvent[] @relation("EventPlayer")
+  assists     MatchEvent[] @relation("EventAssist")
+  subsIn      MatchEvent[] @relation("EventPlayerIn")
+  suspensions Suspension[]
 }
 
 model Squad {
@@ -144,22 +145,23 @@ model Match {
   updatedById      Int?
   events           MatchEvent[]
   lineup           Lineup[]
+  suspensions      Suspension[]
 
   @@unique([divisionId, homeClubSeasonId, awayClubSeasonId])
 }
 
 model MatchEvent {
-  id            Int       @id @default(autoincrement())
-  match         Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
-  matchId       Int
-  type          EventType
-  minute        Int
-  player        Player    @relation("EventPlayer", fields: [playerId], references: [id])
-  playerId      Int
-  assistPlayer  Player?   @relation("EventAssist", fields: [assistPlayerId], references: [id])
+  id             Int       @id @default(autoincrement())
+  match          Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  matchId        Int
+  type           EventType
+  minute         Int
+  player         Player    @relation("EventPlayer", fields: [playerId], references: [id])
+  playerId       Int
+  assistPlayer   Player?   @relation("EventAssist", fields: [assistPlayerId], references: [id])
   assistPlayerId Int?
-  playerIn      Player?   @relation("EventPlayerIn", fields: [playerInId], references: [id])
-  playerInId    Int?
+  playerIn       Player?   @relation("EventPlayerIn", fields: [playerInId], references: [id])
+  playerInId     Int?
 }
 
 model Lineup {
@@ -174,12 +176,17 @@ model Lineup {
 }
 
 model Suspension {
-  id             Int    @id @default(autoincrement())
-  player         Player @relation(fields: [playerId], references: [id])
-  playerId       Int
-  matchesTotal   Int
-  matchesServed  Int    @default(0)
-  reason         String
+  id            Int     @id @default(autoincrement())
+  player        Player  @relation(fields: [playerId], references: [id])
+  playerId      Int
+  matchesTotal  Int
+  matchesServed Int     @default(0)
+  reason        String
+  // Renseignés pour les suspensions automatiques (BR-32) : match déclencheur. null = saisie manuelle (BR-31).
+  season        Season? @relation(fields: [seasonId], references: [id])
+  seasonId      Int?
+  match         Match?  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  matchId       Int?
 }
 
 model Setting {

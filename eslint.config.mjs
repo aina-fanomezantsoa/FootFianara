@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Client Prisma généré et worktrees des agents
+    "generated/**",
+    ".claude/**",
   ]),
 ]);
 

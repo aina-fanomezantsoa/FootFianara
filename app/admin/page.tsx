@@ -18,6 +18,13 @@ export default async function Admin({
           Gérer les comptes
         </a>
       )}
+      {user.role !== "ASSISTANT" && (
+        <nav className="flex gap-4 underline">
+          <a href="/admin/saisons">Saisons</a>
+          <a href="/admin/divisions">Divisions</a>
+          <a href="/admin/stades">Stades</a>
+        </nav>
+      )}
       {refuse && (
         <p role="alert" className="text-red-600">
           Accès refusé pour votre rôle.

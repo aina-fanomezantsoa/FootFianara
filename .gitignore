@@ -44,3 +44,6 @@ next-env.d.ts
 /generated/prisma
 .env
 !.env.example
+
+# Worktrees des agents Claude
+.claude/worktrees/

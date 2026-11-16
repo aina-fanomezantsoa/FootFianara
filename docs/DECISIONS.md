@@ -128,13 +128,13 @@ Statut : ✅ validé · 🟡 provisoire (à confirmer) · ❓ ouvert
 
 ## Série 9 — Design du site public (2026-11-15)
 
-| #   | Sujet        | Décision                                                                                                       | Statut |
-| --- | ------------ | -------------------------------------------------------------------------------------------------------------- | ------ |
-| 83  | Typographies | Barlow Condensed (titres, scores, capitales) et Inter (texte, tableaux, chiffres tabulaires) via next/font ; voir DESIGN_PUBLIC.md | 🟡     |
-| 84  | Nombre impair de clubs | Génération du calendrier refusée (pas de club exempt) ; la division doit compter un nombre pair de clubs | ✅     |
-| 85  | Suspension manuelle    | Rattachée à la saison la plus récente ; seule une manuelle peut être marquée purgée à la main (les automatiques se recalculent) | ✅     |
-| 86  | Saisie de la date      | Un seul champ date et heure (heure de Madagascar, UTC+3) | ✅     |
-| 87  | Remplacements          | Saisis avec le résultat dans le même formulaire | ✅     |
+| #   | Sujet                  | Décision                                                                                                                           | Statut |
+| --- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 83  | Typographies           | Barlow Condensed (titres, scores, capitales) et Inter (texte, tableaux, chiffres tabulaires) via next/font ; voir DESIGN_PUBLIC.md | 🟡     |
+| 84  | Nombre impair de clubs | Génération du calendrier refusée (pas de club exempt) ; la division doit compter un nombre pair de clubs                           | ✅     |
+| 85  | Suspension manuelle    | Rattachée à la saison la plus récente ; seule une manuelle peut être marquée purgée à la main (les automatiques se recalculent)    | ✅     |
+| 86  | Saisie de la date      | Un seul champ date et heure (heure de Madagascar, UTC+3)                                                                           | ✅     |
+| 87  | Remplacements          | Saisis avec le résultat dans le même formulaire                                                                                    | ✅     |
 
 ## Points encore ouverts
 

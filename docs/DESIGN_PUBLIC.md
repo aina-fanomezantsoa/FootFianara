@@ -4,16 +4,16 @@ Spécification pour l'implémentation. S'appuie sur `UI_UX_GUIDELINES.md`, `REQU
 
 ## 1. Rappel des tokens (T19, ne pas en ajouter)
 
-| Token Tailwind                   | Valeur    | Usage                                                     |
-| -------------------------------- | --------- | --------------------------------------------------------- |
-| `bg-background`                  | `#000000` | fond de page                                              |
-| `bg-surface`                     | `#111111` | cartes, barre de navigation                               |
-| `border-border`                  | `#2a2a2a` | bordures, séparateurs de lignes                           |
-| `text-muted`                     | `#9a9a9a` | libellés, métadonnées (date, stade, en-têtes de colonnes) |
-| `text-foreground`                | `#ffffff` | texte principal, scores, état actif                       |
-| `.title-sport`                   |           | titres en capitales                                       |
-| `.num`                           |           | chiffres tabulaires (scores, tableaux, stats)             |
-| `:focus-visible`                 |           | contour blanc 2 px, déjà global                           |
+| Token Tailwind    | Valeur    | Usage                                                     |
+| ----------------- | --------- | --------------------------------------------------------- |
+| `bg-background`   | `#000000` | fond de page                                              |
+| `bg-surface`      | `#111111` | cartes, barre de navigation                               |
+| `border-border`   | `#2a2a2a` | bordures, séparateurs de lignes                           |
+| `text-muted`      | `#9a9a9a` | libellés, métadonnées (date, stade, en-têtes de colonnes) |
+| `text-foreground` | `#ffffff` | texte principal, scores, état actif                       |
+| `.title-sport`    |           | titres en capitales                                       |
+| `.num`            |           | chiffres tabulaires (scores, tableaux, stats)             |
+| `:focus-visible`  |           | contour blanc 2 px, déjà global                           |
 
 Composants existants à réutiliser : `Card`, `Button` / `ButtonLink` (`primary`, `secondary`, `min-h-11` = 44 px), `Badge` (`inverted`), `Table` / `Th` / `Td`.
 
@@ -25,10 +25,10 @@ Contraste : `#9a9a9a` sur `#000` ou `#111` dépasse 4.5:1, utilisable pour du te
 
 Chargées par `next/font/google` dans `app/layout.tsx` (remplacent Geist) :
 
-| Rôle                 | Famille exacte       | Import next/font                                    | Variable CSS     | Token Tailwind |
-| -------------------- | -------------------- | --------------------------------------------------- | ---------------- | -------------- |
-| Titres, scores, nav  | **Barlow Condensed** | `Barlow_Condensed({ weight: ["600","700"], subsets: ["latin"] })` | `--font-display` | `font-display` |
-| Texte, tableaux      | **Inter**            | `Inter({ subsets: ["latin"] })` (variable)          | `--font-sans`    | `font-sans`    |
+| Rôle                | Famille exacte       | Import next/font                                                  | Variable CSS     | Token Tailwind |
+| ------------------- | -------------------- | ----------------------------------------------------------------- | ---------------- | -------------- |
+| Titres, scores, nav | **Barlow Condensed** | `Barlow_Condensed({ weight: ["600","700"], subsets: ["latin"] })` | `--font-display` | `font-display` |
+| Texte, tableaux     | **Inter**            | `Inter({ subsets: ["latin"] })` (variable)                        | `--font-sans`    | `font-sans`    |
 
 - Dans `@theme inline` : `--font-sans: var(--font-inter)` et `--font-display: var(--font-barlow)` (noms de variables au choix, tant que les deux tokens existent). Supprimer `--font-mono`, inutilisé.
 - `.title-sport` ajoute `font-family: var(--font-display)` ; poids 700.
@@ -88,7 +88,7 @@ type MatchCardProps = {
   status: "SCHEDULED" | "PLAYED" | "POSTPONED" | "FORFEIT";
   homeGoals: number | null;
   awayGoals: number | null;
-  division?: string;   // "D1", affiché en Badge si fourni (accueil, toutes divisions)
+  division?: string; // "D1", affiché en Badge si fourni (accueil, toutes divisions)
   matchday?: number;
 };
 ```
@@ -114,15 +114,19 @@ Dates : `Intl.DateTimeFormat("fr-FR", { timeZone: "Indian/Antananarivo" })`, tou
 type StandingRow = {
   position: number;
   club: { id: number; name: string; shortName: string; logoUrl: string | null };
-  played: number; won: number; drawn: number; lost: number;
-  goalDiff: number; points: number;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalDiff: number;
+  points: number;
 };
 type StandingsTableProps = {
   rows: StandingRow[];
-  compact?: boolean;          // accueil : Pos, Club, J, Diff, Pts seulement
-  limit?: number;             // accueil : 5 premiers
-  promotion?: number;         // nb de places de montée (4 en D2, D3 ; 0 en D1)
-  relegation?: number;        // nb de places de descente (4 en D1, D2 ; 0 en D3)
+  compact?: boolean; // accueil : Pos, Club, J, Diff, Pts seulement
+  limit?: number; // accueil : 5 premiers
+  promotion?: number; // nb de places de montée (4 en D2, D3 ; 0 en D1)
+  relegation?: number; // nb de places de descente (4 en D1, D2 ; 0 en D3)
 };
 ```
 
@@ -145,7 +149,7 @@ type ClubCrestProps = {
   name: string;
   shortName: string;
   logoUrl: string | null;
-  size?: 20 | 32 | 48 | 96;   // px, défaut 32
+  size?: 20 | 32 | 48 | 96; // px, défaut 32
 };
 ```
 
@@ -160,7 +164,7 @@ type PlayerCardProps = {
   firstName: string;
   lastName: string;
   photoUrl: string | null;
-  position: string;           // « Attaquant »
+  position: string; // « Attaquant »
   shirtNumber: number | null;
   club?: { name: string; shortName: string; logoUrl: string | null };
   suspended?: boolean;
@@ -174,10 +178,14 @@ Numéro en `font-display text-xl .num w-8 text-center`, photo 40 px `rounded-sm`
 
 ```ts
 type StatListProps = {
-  title: string;              // « Buteurs »
-  unit: string;               // « buts », lu par les lecteurs d'écran
-  rows: { player: { id: number; name: string }; club: { shortName: string; logoUrl: string | null; name: string }; value: number }[];
-  limit?: number;             // 5 sur l'accueil/club, 20 sur Statistiques
+  title: string; // « Buteurs »
+  unit: string; // « buts », lu par les lecteurs d'écran
+  rows: {
+    player: { id: number; name: string };
+    club: { shortName: string; logoUrl: string | null; name: string };
+    value: number;
+  }[];
+  limit?: number; // 5 sur l'accueil/club, 20 sur Statistiques
   emptyText: string;
 };
 ```
@@ -189,8 +197,8 @@ type StatListProps = {
 ```ts
 type DivisionTabsProps = {
   items: { label: string; href: string }[]; // ex. { label: "D2", href: "/classement?division=D2" }
-  active: string;                           // label actif
-  ariaLabel: string;                        // « Divisions »
+  active: string; // label actif
+  ariaLabel: string; // « Divisions »
 };
 ```
 
@@ -201,7 +209,11 @@ Liens simples (pas d'état client : la page reste serveur et partageable) dans u
 ### 4.7 `EmptyState`
 
 ```ts
-type EmptyStateProps = { title: string; text?: string; action?: { label: string; href: string } };
+type EmptyStateProps = {
+  title: string;
+  text?: string;
+  action?: { label: string; href: string };
+};
 ```
 
 `Card` avec `border-dashed`, texte centré, titre `font-semibold`, texte `text-sm text-muted`, `ButtonLink secondary` optionnel. Pas d'illustration ni d'icône géante.
@@ -258,7 +270,7 @@ Vide : « Le calendrier n'est pas encore publié » (voir état commun).
    - CSC : `Badge` « CSC », « Rakoto J. (c.s.c.) » ;
    - Jaune : rectangle 10 × 14 px `rounded-[1px] border border-foreground` (vide) + `sr-only` « Carton jaune » ;
    - Rouge : même rectangle plein `bg-foreground` + `sr-only` « Carton rouge ».
-   Une légende `text-xs text-muted` sous la liste explique les deux rectangles.
+     Une légende `text-xs text-muted` sous la liste explique les deux rectangles.
 5. **Résumé** sous les événements, 3 blocs : Buteurs, Passeurs, Cartons, par club (utile en lecture rapide). Facultatif si le temps manque : la liste chronologique suffit.
 
 Forfait : pas de liste d'événements, texte « Victoire 3-0 sur tapis vert : forfait de Club X ». Programmé/reporté : bloc événements remplacé par « Le résultat sera publié après le match. » / « Match reporté, nouvelle date à venir. ».

@@ -21,11 +21,43 @@ const svg = (d: ReactNode) => (
 );
 
 const liens = [
-  { label: "Accueil", href: "/", icone: svg(<path d="M3 11 12 4l9 7M5 10v10h14V10" />), actif: (p: string) => p === "/" },
-  { label: "Classement", href: "/classement", icone: svg(<path d="M4 6h2M4 12h2M4 18h2M9 6h11M9 12h11M9 18h11" />) },
-  { label: "Matchs", href: "/matchs", icone: svg(<><rect x="3" y="5" width="18" height="16" rx="1" /><path d="M3 10h18M8 3v4M16 3v4" /></>) },
-  { label: "Clubs", href: "/clubs", icone: svg(<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6Z" />) },
-  { label: "Joueurs", href: "/joueurs", icone: svg(<><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" /></>), autres: ["/statistiques"] },
+  {
+    label: "Accueil",
+    href: "/",
+    icone: svg(<path d="M3 11 12 4l9 7M5 10v10h14V10" />),
+    actif: (p: string) => p === "/",
+  },
+  {
+    label: "Classement",
+    href: "/classement",
+    icone: svg(<path d="M4 6h2M4 12h2M4 18h2M9 6h11M9 12h11M9 18h11" />),
+  },
+  {
+    label: "Matchs",
+    href: "/matchs",
+    icone: svg(
+      <>
+        <rect x="3" y="5" width="18" height="16" rx="1" />
+        <path d="M3 10h18M8 3v4M16 3v4" />
+      </>,
+    ),
+  },
+  {
+    label: "Clubs",
+    href: "/clubs",
+    icone: svg(<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6Z" />),
+  },
+  {
+    label: "Joueurs",
+    href: "/joueurs",
+    icone: svg(
+      <>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" />
+      </>,
+    ),
+    autres: ["/statistiques"],
+  },
   { label: "Statistiques", href: "/statistiques", bureau: true },
 ];
 
@@ -53,7 +85,8 @@ function NavLinks({ bureau, p }: { bureau: boolean; p: string }) {
       <ul className="hidden gap-5 md:flex">
         {liens.map((l) => {
           // Sur bureau, Statistiques a son lien : Joueurs n'est plus actif sur /statistiques.
-          const actif = l.href === "/joueurs" ? p.startsWith("/joueurs") : estActif(l, p);
+          const actif =
+            l.href === "/joueurs" ? p.startsWith("/joueurs") : estActif(l, p);
           return (
             <li key={l.href}>
               <Link
@@ -81,7 +114,9 @@ function NavLinks({ bureau, p }: { bureau: boolean; p: string }) {
                 aria-current={actif ? "page" : undefined}
                 className={`relative flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] uppercase ${actif ? "text-foreground" : "text-muted"}`}
               >
-                {actif && <span className="absolute inset-x-3 top-0 h-0.5 bg-foreground" />}
+                {actif && (
+                  <span className="absolute inset-x-3 top-0 h-0.5 bg-foreground" />
+                )}
                 {l.icone}
                 {l.label}
               </Link>

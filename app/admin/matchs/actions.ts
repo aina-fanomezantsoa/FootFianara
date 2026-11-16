@@ -30,7 +30,9 @@ export async function genererCalendrier(f: FormData) {
   const divisionId = Number(f.get("divisionId"));
   const chemin = `/admin/matchs?saison=${seasonId}&division=${divisionId}`;
   const r = await saveCalendar(seasonId, divisionId);
-  redirect("erreur" in r ? `${chemin}&erreur=${encodeURIComponent(r.erreur)}` : chemin);
+  redirect(
+    "erreur" in r ? `${chemin}&erreur=${encodeURIComponent(r.erreur)}` : chemin,
+  );
 }
 
 /** Pour useActionState : l'erreur revient au formulaire client sans perdre la saisie. */
@@ -80,9 +82,5 @@ export async function composer(f: FormData) {
   await requireRole("ASSISTANT");
   const id = Number(f.get("matchId"));
   const v = parseLineup(f);
-  retour(
-    fiche(id),
-    "erreur" in v ? v : await saveLineup(id, v.data),
-    "compo",
-  );
+  retour(fiche(id), "erreur" in v ? v : await saveLineup(id, v.data), "compo");
 }

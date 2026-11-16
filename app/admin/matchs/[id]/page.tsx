@@ -19,12 +19,7 @@ import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { MAX_STARTERS } from "@/lib/lineups";
 import { hasRole } from "@/lib/roles";
-import {
-  annulerForfait,
-  composer,
-  programmer,
-  type CodeOk,
-} from "../actions";
+import { annulerForfait, composer, programmer, type CodeOk } from "../actions";
 
 const SUCCES: Record<CodeOk, string> = {
   programme: "Programmation enregistrée.",

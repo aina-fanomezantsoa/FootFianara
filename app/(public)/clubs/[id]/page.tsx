@@ -10,19 +10,32 @@ import { MatchList } from "@/app/_components/public/MatchCard";
 import { StandingsTable } from "@/app/_components/public/StandingsTable";
 import { getActiveSuspensions } from "@/lib/suspensions";
 import { POSTES } from "@/lib/referentiel";
-import { clubDetail, derniersResultats, imageReduite, prochainsMatchs, saisonEnCours } from "@/lib/public";
+import {
+  clubDetail,
+  derniersResultats,
+  imageReduite,
+  prochainsMatchs,
+  saisonEnCours,
+} from "@/lib/public";
 import { getStandings } from "@/lib/standings-db";
 
 const charger = cache(async (id: string) => {
   const saison = await saisonEnCours();
-  const club = /^\d+$/.test(id) ? await clubDetail(Number(id), saison?.id) : null;
+  const club = /^\d+$/.test(id)
+    ? await clubDetail(Number(id), saison?.id)
+    : null;
   return { saison, club };
 });
 
-export async function generateMetadata({ params }: PageProps<"/clubs/[id]">): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/clubs/[id]">): Promise<Metadata> {
   const { club } = await charger((await params).id);
   return club
-    ? { title: club.name, description: `${club.name} : infos, effectif et matchs.` }
+    ? {
+        title: club.name,
+        description: `${club.name} : infos, effectif et matchs.`,
+      }
     : { title: "Club introuvable" };
 }
 
@@ -37,7 +50,9 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
   const { saison, club } = await charger((await params).id);
   if (!club) notFound();
   const cs = club.seasons[0];
-  const surMatch = cs && { OR: [{ homeClubSeasonId: cs.id }, { awayClubSeasonId: cs.id }] };
+  const surMatch = cs && {
+    OR: [{ homeClubSeasonId: cs.id }, { awayClubSeasonId: cs.id }],
+  };
   const [classement, resultats, prochains, suspensions] = await Promise.all([
     cs && saison ? getStandings(saison.id, cs.division.id) : [],
     surMatch ? derniersResultats(surMatch, 3) : [],
@@ -49,22 +64,33 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
   const effectif = cs?.squad ?? [];
   const groupes = [...POSTES, null].map((p) => ({
     titre: p ? PLURIELS[p] : "Autres",
-    joueurs: effectif.filter((s) => (p ? s.player.position === p : !POSTES.includes(s.player.position ?? ""))),
+    joueurs: effectif.filter((s) =>
+      p ? s.player.position === p : !POSTES.includes(s.player.position ?? ""),
+    ),
   }));
   const infos = [
     ["Président", club.president],
     ["Entraîneur", club.coach],
     ["Couleurs", club.colors],
   ] as const;
-  const sousTitre = [club.foundedYear && `Fondé en ${club.foundedYear}`, club.district && `Quartier ${club.district}`]
+  const sousTitre = [
+    club.foundedYear && `Fondé en ${club.foundedYear}`,
+    club.district && `Quartier ${club.district}`,
+  ]
     .filter(Boolean)
     .join(" · ");
   return (
     <>
       <div className="flex items-center gap-4">
-        <ClubCrest shortName={club.shortName} logoUrl={club.logoUrl} size={96} />
+        <ClubCrest
+          shortName={club.shortName}
+          logoUrl={club.logoUrl}
+          size={96}
+        />
         <div className="min-w-0 space-y-1">
-          <h1 className="title-sport text-3xl break-words sm:text-4xl">{club.name}</h1>
+          <h1 className="title-sport text-3xl break-words sm:text-4xl">
+            {club.name}
+          </h1>
           {cs && <Badge>{cs.division.name}</Badge>}
           {sousTitre && <p className="text-sm text-muted">{sousTitre}</p>}
         </div>
@@ -95,7 +121,10 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
               <div>
                 <dt className="text-xs text-muted">Téléphone</dt>
                 <dd>
-                  <a href={`tel:${club.phone.replace(/\s/g, "")}`} className="inline-flex min-h-11 items-center underline">
+                  <a
+                    href={`tel:${club.phone.replace(/\s/g, "")}`}
+                    className="inline-flex min-h-11 items-center underline"
+                  >
                     {club.phone}
                   </a>
                 </dd>
@@ -105,7 +134,12 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
               <div>
                 <dt className="text-xs text-muted">Facebook</dt>
                 <dd>
-                  <a href={club.facebookUrl} rel="noopener" target="_blank" className="inline-flex min-h-11 items-center underline">
+                  <a
+                    href={club.facebookUrl}
+                    rel="noopener"
+                    target="_blank"
+                    className="inline-flex min-h-11 items-center underline"
+                  >
                     Page Facebook
                   </a>
                 </dd>
@@ -115,17 +149,31 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
         </Card>
       )}
       {ligne.length > 0 && (
-        <Section titre="Saison" lien={{ label: "Classement", href: `/classement?division=${cs!.division.name}` }}>
+        <Section
+          titre="Saison"
+          lien={{
+            label: "Classement",
+            href: `/classement?division=${cs!.division.name}`,
+          }}
+        >
           <StandingsTable rows={ligne} />
         </Section>
       )}
       {cs && (
         <>
           <Section titre="Derniers résultats">
-            {resultats.length ? <MatchList matchs={resultats} /> : <EmptyState title="Aucun résultat pour l'instant" />}
+            {resultats.length ? (
+              <MatchList matchs={resultats} />
+            ) : (
+              <EmptyState title="Aucun résultat pour l'instant" />
+            )}
           </Section>
           <Section titre="Prochains matchs">
-            {prochains.length ? <MatchList matchs={prochains} /> : <EmptyState title="Aucun match programmé" />}
+            {prochains.length ? (
+              <MatchList matchs={prochains} />
+            ) : (
+              <EmptyState title="Aucun match programmé" />
+            )}
           </Section>
         </>
       )}
@@ -134,7 +182,9 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
           <EmptyState title="Effectif non renseigné" />
         ) : (
           <>
-            <p className="text-sm text-muted">{effectif.length} joueur{effectif.length > 1 ? "s" : ""}</p>
+            <p className="text-sm text-muted">
+              {effectif.length} joueur{effectif.length > 1 ? "s" : ""}
+            </p>
             {groupes.map(
               (g) =>
                 g.joueurs.length > 0 && (
@@ -143,7 +193,11 @@ export default async function ClubPage({ params }: PageProps<"/clubs/[id]">) {
                     <ul>
                       {g.joueurs.map((s) => (
                         <li key={s.player.id}>
-                          <PlayerCard {...s.player} shirtNumber={s.shirtNumber} suspended={suspendus.has(s.player.id)} />
+                          <PlayerCard
+                            {...s.player}
+                            shirtNumber={s.shirtNumber}
+                            suspended={suspendus.has(s.player.id)}
+                          />
                         </li>
                       ))}
                     </ul>

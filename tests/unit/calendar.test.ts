@@ -16,11 +16,17 @@ describe("generateCalendar", () => {
   });
   it("le retour inverse l'aller, 11 journées plus tard", () => {
     for (const f of cal.filter((x) => x.matchday <= 11))
-      expect(cal).toContainEqual({ matchday: f.matchday + 11, home: f.away, away: f.home });
+      expect(cal).toContainEqual({
+        matchday: f.matchday + 11,
+        home: f.away,
+        away: f.home,
+      });
   });
   it("aucun club ne joue deux fois dans une journée", () => {
     for (let d = 1; d <= 22; d++) {
-      const ids = cal.filter((f) => f.matchday === d).flatMap((f) => [f.home, f.away]);
+      const ids = cal
+        .filter((f) => f.matchday === d)
+        .flatMap((f) => [f.home, f.away]);
       expect(ids).toHaveLength(12);
       expect(new Set(ids).size).toBe(12);
     }

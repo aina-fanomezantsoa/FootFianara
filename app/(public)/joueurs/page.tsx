@@ -8,11 +8,13 @@ import { getActiveSuspensions } from "@/lib/suspensions";
 
 export const metadata: Metadata = {
   title: "Joueurs",
-  description: "Les joueurs du championnat de Fianarantsoa : recherche par nom et par club.",
+  description:
+    "Les joueurs du championnat de Fianarantsoa : recherche par nom et par club.",
 };
 
 const PAR_PAGE = 50;
-const champ = "min-h-11 w-full rounded-sm border border-border bg-surface px-3 text-foreground";
+const champ =
+  "min-h-11 w-full rounded-sm border border-border bg-surface px-3 text-foreground";
 
 export default async function Joueurs({ searchParams }: PageProps<"/joueurs">) {
   const sp = await searchParams;
@@ -27,7 +29,11 @@ export default async function Joueurs({ searchParams }: PageProps<"/joueurs">) {
   ]);
   const suspendus = new Set(suspensions.map((s) => s.player.id));
   const visibles = liste.slice(0, page * PAR_PAGE);
-  const suite = new URLSearchParams({ q, club: String(clubId ?? ""), page: String(page + 1) });
+  const suite = new URLSearchParams({
+    q,
+    club: String(clubId ?? ""),
+    page: String(page + 1),
+  });
   return (
     <>
       <h1 className="title-sport text-3xl sm:text-4xl">Joueurs</h1>
@@ -35,7 +41,13 @@ export default async function Joueurs({ searchParams }: PageProps<"/joueurs">) {
       <form role="search" className="grid gap-2 sm:grid-cols-[1fr_14rem_auto]">
         <label>
           <span className="sr-only">Rechercher un joueur</span>
-          <input type="search" name="q" defaultValue={q} placeholder="Nom ou prénom" className={champ} />
+          <input
+            type="search"
+            name="q"
+            defaultValue={q}
+            placeholder="Nom ou prénom"
+            className={champ}
+          />
         </label>
         <label>
           <span className="sr-only">Club</span>
@@ -55,7 +67,11 @@ export default async function Joueurs({ searchParams }: PageProps<"/joueurs">) {
       {visibles.length === 0 ? (
         q || clubId ? (
           <EmptyState
-            title={q ? `Aucun joueur ne correspond à « ${q} »` : "Aucun joueur dans ce club"}
+            title={
+              q
+                ? `Aucun joueur ne correspond à « ${q} »`
+                : "Aucun joueur dans ce club"
+            }
             action={{ label: "Effacer la recherche", href: "/joueurs" }}
           />
         ) : (
@@ -79,14 +95,22 @@ export default async function Joueurs({ searchParams }: PageProps<"/joueurs">) {
             ))}
           </ul>
           {liste.length > visibles.length && (
-            <ButtonLink variant="secondary" className="w-full" href={`/joueurs?${suite}`} scroll={false}>
+            <ButtonLink
+              variant="secondary"
+              className="w-full"
+              href={`/joueurs?${suite}`}
+              scroll={false}
+            >
               Plus de joueurs
             </ButtonLink>
           )}
         </>
       )}
       {q && visibles.length > 0 && (
-        <Link href="/joueurs" className="flex min-h-11 items-center text-sm text-muted underline">
+        <Link
+          href="/joueurs"
+          className="flex min-h-11 items-center text-sm text-muted underline"
+        >
           Effacer la recherche
         </Link>
       )}

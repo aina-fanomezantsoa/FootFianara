@@ -10,7 +10,9 @@ export async function cleanup() {
   const clubSeasons = { season: seasons };
   const matches = { season: seasons };
   const joueurs = { lastName: { startsWith: MARQUE } };
-  await db.suspension.deleteMany({ where: { OR: [{ season: seasons }, { player: joueurs }] } });
+  await db.suspension.deleteMany({
+    where: { OR: [{ season: seasons }, { player: joueurs }] },
+  });
   await db.matchEvent.deleteMany({ where: { match: matches } });
   await db.lineup.deleteMany({ where: { match: matches } });
   await db.match.deleteMany({ where: matches });

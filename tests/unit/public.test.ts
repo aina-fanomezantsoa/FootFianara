@@ -18,7 +18,11 @@ const s = (name: string, debut: string, fin: string) => ({
 
 describe("site public", () => {
   it("saison en cours : celle qui contient la date, sinon la plus récente", () => {
-    const saisons = [s("2025", "2025-01-01", "2025-12-31"), s("2027", "2027-01-01", "2027-12-31"), s("2026", "2026-01-01", "2026-12-31")];
+    const saisons = [
+      s("2025", "2025-01-01", "2025-12-31"),
+      s("2027", "2027-01-01", "2027-12-31"),
+      s("2026", "2026-01-01", "2026-12-31"),
+    ];
     expect(choisirSaison(saisons, new Date("2026-06-01"))?.name).toBe("2026");
     expect(choisirSaison(saisons, new Date("2030-01-01"))?.name).toBe("2027");
     expect(choisirSaison([], new Date())).toBeNull();
@@ -40,7 +44,12 @@ describe("site public", () => {
         { matchday: 2, status: "SCHEDULED" },
       ]),
     ).toBe(2);
-    expect(journeeParDefaut([{ matchday: 1, status: "PLAYED" }, { matchday: 2, status: "FORFEIT" }])).toBe(2);
+    expect(
+      journeeParDefaut([
+        { matchday: 1, status: "PLAYED" },
+        { matchday: 2, status: "FORFEIT" },
+      ]),
+    ).toBe(2);
   });
 
   it("recherche insensible à la casse et aux accents", () => {
@@ -51,7 +60,9 @@ describe("site public", () => {
   });
 
   it("image Cloudinary réduite, autres URL intactes", () => {
-    expect(imageReduite("https://res.cloudinary.com/x/image/upload/v1/a.png", 96)).toBe(
+    expect(
+      imageReduite("https://res.cloudinary.com/x/image/upload/v1/a.png", 96),
+    ).toBe(
       "https://res.cloudinary.com/x/image/upload/f_auto,q_auto,w_96/v1/a.png",
     );
     expect(imageReduite("/logo-club.svg", 96)).toBe("/logo-club.svg");

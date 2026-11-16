@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendrierVide, DivisionTabs, EmptyState } from "@/app/_components/public/Blocs";
+import {
+  CalendrierVide,
+  DivisionTabs,
+  EmptyState,
+} from "@/app/_components/public/Blocs";
 import { ClubCrest } from "@/app/_components/public/ClubCrest";
 import { clubsDivision, contexte } from "@/lib/public";
 
@@ -24,7 +28,11 @@ export default async function Clubs({ searchParams }: PageProps<"/clubs">) {
   return (
     <>
       {titre}
-      <DivisionTabs divisions={divisions} active={division.name} path="/clubs" />
+      <DivisionTabs
+        divisions={divisions}
+        active={division.name}
+        path="/clubs"
+      />
       {clubs.length === 0 ? (
         <EmptyState title="Aucun club inscrit dans cette division" />
       ) : (
@@ -35,9 +43,17 @@ export default async function Clubs({ searchParams }: PageProps<"/clubs">) {
                 href={`/clubs/${c.id}`}
                 className="flex h-full flex-col items-center gap-2 rounded-md border border-border bg-surface p-4 text-center transition-colors hover:border-foreground"
               >
-                <ClubCrest shortName={c.shortName} logoUrl={c.logoUrl} size={48} />
-                <span className="line-clamp-2 text-sm font-semibold">{c.name}</span>
-                {c.district && <span className="text-xs text-muted">{c.district}</span>}
+                <ClubCrest
+                  shortName={c.shortName}
+                  logoUrl={c.logoUrl}
+                  size={48}
+                />
+                <span className="line-clamp-2 text-sm font-semibold">
+                  {c.name}
+                </span>
+                {c.district && (
+                  <span className="text-xs text-muted">{c.district}</span>
+                )}
               </Link>
             </li>
           ))}

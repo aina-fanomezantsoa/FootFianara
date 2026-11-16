@@ -66,10 +66,19 @@ export function StandingsTable({
                   : "border-l-2 border-l-transparent";
             return (
               <tr key={r.clubSeasonId}>
-                <Td className={`${pad} text-muted ${zone}`}>{r.played ? r.rank : i + 1}</Td>
+                <Td className={`${pad} text-muted ${zone}`}>
+                  {r.played ? r.rank : i + 1}
+                </Td>
                 <Td className={pad}>
-                  <Link href={`/clubs/${r.clubId}`} className="flex min-h-6 items-center gap-2 hover:underline">
-                    <ClubCrest shortName={r.shortName} logoUrl={r.logoUrl} size={20} />
+                  <Link
+                    href={`/clubs/${r.clubId}`}
+                    className="flex min-h-6 items-center gap-2 hover:underline"
+                  >
+                    <ClubCrest
+                      shortName={r.shortName}
+                      logoUrl={r.logoUrl}
+                      size={20}
+                    />
                     <span className="truncate sm:hidden">{r.shortName}</span>
                     <span className="hidden truncate sm:inline">{r.name}</span>
                   </Link>
@@ -82,7 +91,9 @@ export function StandingsTable({
                     <Td className={`${cellule} text-muted`}>{r.lost}</Td>
                   </>
                 )}
-                <Td className={`${cellule} text-muted`}>{diffSignee(r.goalDiff)}</Td>
+                <Td className={`${cellule} text-muted`}>
+                  {diffSignee(r.goalDiff)}
+                </Td>
                 <Td className={`${cellule} font-bold`}>{r.points}</Td>
               </tr>
             );
@@ -91,7 +102,10 @@ export function StandingsTable({
       </Table>
       {(promotion > 0 || relegation > 0) && (
         <p className="text-xs text-muted">
-          {[promotion > 0 && "Trait plein : montée", relegation > 0 && "Pointillé : descente"]
+          {[
+            promotion > 0 && "Trait plein : montée",
+            relegation > 0 && "Pointillé : descente",
+          ]
             .filter(Boolean)
             .join(" · ")}
         </p>

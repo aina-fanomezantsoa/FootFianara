@@ -2,29 +2,45 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendrierVide, DivisionTabs } from "@/app/_components/public/Blocs";
 import { MatchList } from "@/app/_components/public/MatchCard";
-import { contexte, dateLongue, journeeParDefaut, matchsDivision, type MatchPublic } from "@/lib/public";
+import {
+  contexte,
+  dateLongue,
+  journeeParDefaut,
+  matchsDivision,
+  type MatchPublic,
+} from "@/lib/public";
 
 export const metadata: Metadata = {
   title: "Matchs",
-  description: "Calendrier et résultats du championnat de Fianarantsoa, journée par journée.",
+  description:
+    "Calendrier et résultats du championnat de Fianarantsoa, journée par journée.",
 };
 
 export default async function Matchs({ searchParams }: PageProps<"/matchs">) {
   const { division: param, journee: j } = await searchParams;
   const { saison, divisions, division } = await contexte(String(param ?? ""));
   const titre = <h1 className="title-sport text-3xl sm:text-4xl">Matchs</h1>;
-  const matchs = saison && division ? await matchsDivision(saison.id, division.id) : [];
+  const matchs =
+    saison && division ? await matchsDivision(saison.id, division.id) : [];
   if (!division || matchs.length === 0)
     return (
       <>
         {titre}
-        {division && <DivisionTabs divisions={divisions} active={division.name} path="/matchs" />}
+        {division && (
+          <DivisionTabs
+            divisions={divisions}
+            active={division.name}
+            path="/matchs"
+          />
+        )}
         <CalendrierVide />
       </>
     );
   const journees = [...new Set(matchs.map((m) => m.matchday))];
   const demandee = Number(j);
-  const journee = journees.includes(demandee) ? demandee : journeeParDefaut(matchs)!;
+  const journee = journees.includes(demandee)
+    ? demandee
+    : journeeParDefaut(matchs)!;
   const href = (n: number) => `/matchs?division=${division.name}&journee=${n}`;
   const parDate = new Map<string, MatchPublic[]>();
   for (const m of matchs.filter((m) => m.matchday === journee)) {
@@ -35,7 +51,11 @@ export default async function Matchs({ searchParams }: PageProps<"/matchs">) {
   return (
     <>
       {titre}
-      <DivisionTabs divisions={divisions} active={division.name} path="/matchs" />
+      <DivisionTabs
+        divisions={divisions}
+        active={division.name}
+        path="/matchs"
+      />
       <nav aria-label="Journées">
         {/* Seul défilement horizontal du site : une rangée de boutons, pas un tableau. */}
         <ul className="flex snap-x gap-1 overflow-x-auto pb-1">
@@ -62,14 +82,20 @@ export default async function Matchs({ searchParams }: PageProps<"/matchs">) {
       ))}
       <div className="flex justify-between text-sm">
         {i > 0 ? (
-          <Link href={href(journees[i - 1])} className="flex min-h-11 items-center text-muted hover:text-foreground">
+          <Link
+            href={href(journees[i - 1])}
+            className="flex min-h-11 items-center text-muted hover:text-foreground"
+          >
             ‹ Journée précédente
           </Link>
         ) : (
           <span />
         )}
         {i < journees.length - 1 && (
-          <Link href={href(journees[i + 1])} className="flex min-h-11 items-center text-muted hover:text-foreground">
+          <Link
+            href={href(journees[i + 1])}
+            className="flex min-h-11 items-center text-muted hover:text-foreground"
+          >
             Journée suivante ›
           </Link>
         )}

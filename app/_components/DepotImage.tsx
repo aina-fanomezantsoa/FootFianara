@@ -18,7 +18,10 @@ export function DepotImage({
 }) {
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
-  const [apercu, setApercu] = useState(url ?? "");
+  // Seuls blob: (aperçu local) et https: (Cloudinary) sont acceptés comme source d'image.
+  const [apercu, setApercu] = useState(
+    /^https:\/\//.test(url ?? "") ? url! : "",
+  );
   const [msg, setMsg] = useState("");
   const [survol, setSurvol] = useState(false);
 

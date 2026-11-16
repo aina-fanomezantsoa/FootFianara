@@ -41,11 +41,18 @@ const blank = (clubId: string): Stats => ({
 function effectiveScore(m: StandingMatch): [number, number] | null {
   if (m.status === "PLAYED") return [m.homeGoals, m.awayGoals];
   if (m.status === "FORFEIT")
-    return m.forfeitBy === "away" ? [3, 0] : m.forfeitBy === "home" ? [0, 3] : null;
+    return m.forfeitBy === "away"
+      ? [3, 0]
+      : m.forfeitBy === "home"
+        ? [0, 3]
+        : null;
   return null;
 }
 
-function compute(clubIds: string[], matches: StandingMatch[]): Map<string, Stats> {
+function compute(
+  clubIds: string[],
+  matches: StandingMatch[],
+): Map<string, Stats> {
   const t = new Map(clubIds.map((id) => [id, blank(id)]));
   for (const m of matches) {
     const s = effectiveScore(m);
@@ -75,12 +82,15 @@ function compute(clubIds: string[], matches: StandingMatch[]): Map<string, Stats
 const byMain = (a: Stats, b: Stats) =>
   b.points - a.points || b.goalDiff - a.goalDiff || b.goalsFor - a.goalsFor;
 
-export function computeStandings(clubIds: string[], matches: StandingMatch[]): StandingRow[] {
+export function computeStandings(
+  clubIds: string[],
+  matches: StandingMatch[],
+): StandingRow[] {
   const all = [...compute(clubIds, matches).values()].sort(
     (a, b) => byMain(a, b) || a.clubId.localeCompare(b.clubId),
   );
   const out: StandingRow[] = [];
-  for (let i = 0; i < all.length; ) {
+  for (let i = 0; i < all.length;) {
     let j = i + 1;
     while (j < all.length && byMain(all[i], all[j]) === 0) j++;
     const group = all.slice(i, j);
@@ -93,8 +103,11 @@ export function computeStandings(clubIds: string[], matches: StandingMatch[]): S
         ids,
         matches.filter((m) => ids.includes(m.homeId) && ids.includes(m.awayId)),
       );
-      const cmp = (a: Stats, b: Stats) => byMain(h2h.get(a.clubId)!, h2h.get(b.clubId)!);
-      ordered = [...group].sort((a, b) => cmp(a, b) || a.clubId.localeCompare(b.clubId));
+      const cmp = (a: Stats, b: Stats) =>
+        byMain(h2h.get(a.clubId)!, h2h.get(b.clubId)!);
+      ordered = [...group].sort(
+        (a, b) => cmp(a, b) || a.clubId.localeCompare(b.clubId),
+      );
       ordered.forEach((g, k) => {
         if (
           (ordered[k + 1] && cmp(g, ordered[k + 1]) === 0) ||
@@ -105,7 +118,11 @@ export function computeStandings(clubIds: string[], matches: StandingMatch[]): S
     }
     // shortcut: ex aequo départagés provisoirement par id, l'admin tranche via needsAdminDecision.
     ordered.forEach((g, k) =>
-      out.push({ ...g, rank: i + k + 1, needsAdminDecision: ties.has(g.clubId) }),
+      out.push({
+        ...g,
+        rank: i + k + 1,
+        needsAdminDecision: ties.has(g.clubId),
+      }),
     );
     i = j;
   }

@@ -12,7 +12,9 @@ export function choisirSaison<T extends { startDate: Date; endDate: Date }>(
   const tri = [...saisons].sort(
     (a, b) => b.startDate.getTime() - a.startDate.getTime(),
   );
-  return tri.find((s) => s.startDate <= now && now <= s.endDate) ?? tri[0] ?? null;
+  return (
+    tri.find((s) => s.startDate <= now && now <= s.endDate) ?? tri[0] ?? null
+  );
 }
 
 /** Division demandée par son nom (insensible à la casse), sinon la première (D1). */
@@ -50,7 +52,9 @@ export const correspond = (
 
 /** Image Cloudinary réduite pour la 4G (T24) ; les autres URL sont rendues telles quelles. */
 export function imageReduite(url: string, largeur: number) {
-  const m = url.match(/^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.*)$/);
+  const m = url.match(
+    /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.*)$/,
+  );
   return m ? `${m[1]}f_auto,q_auto,w_${largeur}/${m[2]}` : url;
 }
 
@@ -65,7 +69,12 @@ export const dateLongue = (d: Date) =>
   fmt({ weekday: "long", day: "numeric", month: "long" }).format(d);
 /** « samedi 17 janvier 2026 » */
 export const dateComplete = (d: Date) =>
-  fmt({ weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(d);
+  fmt({
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d);
 /** « 15:00 » */
 export const heure = (d: Date) =>
   fmt({ hour: "2-digit", minute: "2-digit" }).format(d);
@@ -91,16 +100,23 @@ export async function saisonEnCours() {
   );
 }
 
-export const divisions = () => db.division.findMany({ orderBy: { level: "asc" } });
+export const divisions = () =>
+  db.division.findMany({ orderBy: { level: "asc" } });
 
 /** Saison, divisions et division choisie : base commune des pages filtrées par division. */
 export async function contexte(divisionParam?: string) {
   const [saison, divs] = await Promise.all([saisonEnCours(), divisions()]);
-  return { saison, divisions: divs, division: choisirDivision(divs, divisionParam) };
+  return {
+    saison,
+    divisions: divs,
+    division: choisirDivision(divs, divisionParam),
+  };
 }
 
 const club = {
-  select: { club: { select: { id: true, name: true, shortName: true, logoUrl: true } } },
+  select: {
+    club: { select: { id: true, name: true, shortName: true, logoUrl: true } },
+  },
 };
 const matchSelect = {
   id: true,
@@ -116,12 +132,11 @@ const matchSelect = {
   homeClubSeason: club,
   awayClubSeason: club,
 } satisfies Prisma.MatchSelect;
-export type MatchPublic = Prisma.MatchGetPayload<{ select: typeof matchSelect }>;
+export type MatchPublic = Prisma.MatchGetPayload<{
+  select: typeof matchSelect;
+}>;
 
-export const prochainsMatchs = (
-  where: Prisma.MatchWhereInput,
-  take: number,
-) =>
+export const prochainsMatchs = (where: Prisma.MatchWhereInput, take: number) =>
   db.match.findMany({
     where: { ...where, status: "SCHEDULED", kickoffAt: { gte: new Date() } },
     orderBy: { kickoffAt: "asc" },
@@ -135,7 +150,10 @@ export const derniersResultats = (
 ) =>
   db.match.findMany({
     where: { ...where, status: { in: ["PLAYED", "FORFEIT"] } },
-    orderBy: [{ kickoffAt: { sort: "desc", nulls: "last" } }, { matchday: "desc" }],
+    orderBy: [
+      { kickoffAt: { sort: "desc", nulls: "last" } },
+      { matchday: "desc" },
+    ],
     take,
     select: matchSelect,
   });
@@ -160,7 +178,7 @@ export const derniereJournee = async (seasonId: number, divisionId: number) =>
     })
   )._max.matchday;
 
-const nomJoueur ={ select: { id: true, firstName: true, lastName: true } };
+const nomJoueur = { select: { id: true, firstName: true, lastName: true } };
 
 export const matchDetail = (id: number) =>
   db.match.findUnique({
@@ -223,7 +241,11 @@ export const clubsDivision = (seasonId: number, divisionId?: number) =>
   });
 
 /** Joueurs avec leur club de la saison (dernier effectif). shortcut: filtre en mémoire (accents), à passer en SQL (unaccent) au-delà de quelques milliers. */
-export async function joueurs(seasonId: number | undefined, q: string, clubId?: number) {
+export async function joueurs(
+  seasonId: number | undefined,
+  q: string,
+  clubId?: number,
+) {
   const tous = await db.player.findMany({
     where: clubId
       ? { squads: { some: { clubSeason: { seasonId, clubId } } } }
@@ -265,7 +287,9 @@ export async function statsJoueur(playerId: number, seasonId: number) {
   const [matchs, buts, passes, jaunes, rouges] = await Promise.all([
     db.lineup.count({ where: { playerId, match } }),
     db.matchEvent.count({ where: { playerId, type: "GOAL", match } }),
-    db.matchEvent.count({ where: { assistPlayerId: playerId, type: "GOAL", match } }),
+    db.matchEvent.count({
+      where: { assistPlayerId: playerId, type: "GOAL", match },
+    }),
     db.matchEvent.count({ where: { playerId, type: "YELLOW", match } }),
     db.matchEvent.count({ where: { playerId, type: "RED", match } }),
   ]);

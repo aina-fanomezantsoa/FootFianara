@@ -35,47 +35,47 @@ Difficulté : F facile, M moyenne, D difficile. Un seul développeur : les sprin
 
 ## Sprint 4 — Matchs
 
-| ID  | Tâche                                                  | Resp. | Dépend de | Diff. | Validation                                               | État |
-| --- | ------------------------------------------------------ | ----- | --------- | ----- | -------------------------------------------------------- | ---- |
-| T11 | Génération du calendrier aller-retour d'une division   | BE    | T08       | D     | 12 clubs donnent 132 matchs, chaque paire deux fois      | ✅   |
-| T12 | Modification date, heure, stade, report                | FE/BE | T11       | F     | Calendrier modifiable                                    | ✅   |
-| T13 | Saisie des compositions                                | FE/BE | T10       | M     | Compositions enregistrées                                | ✅   |
+| ID  | Tâche                                                  | Resp. | Dépend de | Diff. | Validation                                                | État |
+| --- | ------------------------------------------------------ | ----- | --------- | ----- | --------------------------------------------------------- | ---- |
+| T11 | Génération du calendrier aller-retour d'une division   | BE    | T08       | D     | 12 clubs donnent 132 matchs, chaque paire deux fois       | ✅   |
+| T12 | Modification date, heure, stade, report                | FE/BE | T11       | F     | Calendrier modifiable                                     | ✅   |
+| T13 | Saisie des compositions                                | FE/BE | T10       | M     | Compositions enregistrées                                 | ✅   |
 | T14 | Saisie du résultat : score, buteurs, passeurs, cartons | FE/BE | T11       | D     | Score cohérent avec les buts (BR-27) ; publié directement | ✅   |
-| T15 | Forfait 0-3 et correction par l'admin                  | BE    | T14       | M     | Points corrects ; dernière modification enregistrée      | ✅   |
+| T15 | Forfait 0-3 et correction par l'admin                  | BE    | T14       | M     | Points corrects ; dernière modification enregistrée       | ✅   |
 
 Écarts : compositions faites (T13, non retirées) ; nombre impair de clubs refusé à la génération (décision 84) ; date et heure en un seul champ, heure de Madagascar (décision 86) ; remplacements saisis avec le résultat (décision 87).
 
 ## Sprint 5 — Classement et statistiques
 
-| ID  | Tâche                                           | Resp. | Dépend de | Diff. | Validation                           | État |
-| --- | ----------------------------------------------- | ----- | --------- | ----- | ------------------------------------ | ---- |
-| T16 | Module de classement (points, diff., départage) | BE    | T14       | D     | Tests Vitest sur les cas d'égalité   | ✅   |
-| T17 | Buteurs, passeurs, cartons                      | BE    | T14       | M     | Totaux justes                        | ✅   |
+| ID  | Tâche                                           | Resp. | Dépend de | Diff. | Validation                             | État |
+| --- | ----------------------------------------------- | ----- | --------- | ----- | -------------------------------------- | ---- |
+| T16 | Module de classement (points, diff., départage) | BE    | T14       | D     | Tests Vitest sur les cas d'égalité     | ✅   |
+| T17 | Buteurs, passeurs, cartons                      | BE    | T14       | M     | Totaux justes                          | ✅   |
 | T18 | Suspensions automatiques (5 jaunes ou 1 rouge)  | BE    | T14       | M     | Alerte à l'admin ; affichage sur fiche | 🟡   |
 
 Écart : T18 repose sur des hypothèses non confirmées (BR-32, décisions 77 à 79) ; à valider avec l'admin.
 
 ## Sprint 6 — Site public
 
-| ID  | Tâche                                    | Resp. | Dépend de         | Diff. | Validation                  | État |
-| --- | ---------------------------------------- | ----- | ----------------- | ----- | --------------------------- | ---- |
-| T19 | Design system noir et blanc, composants  | UX/FE | direction validée | M     | Palette en variables        | 🟡   |
-| T20 | Accueil, classement, calendrier/résultats | FE    | T16, T19          | M     | Lisible à 360 px de large   | 🟡   |
-| T21 | Détail match, clubs, fiche club          | FE    | T20               | M     |                             | ✅   |
-| T22 | Joueurs, fiche joueur, statistiques      | FE    | T17, T20          | M     | 3 derniers clubs affichés   | ✅   |
+| ID  | Tâche                                     | Resp. | Dépend de         | Diff. | Validation                | État |
+| --- | ----------------------------------------- | ----- | ----------------- | ----- | ------------------------- | ---- |
+| T19 | Design system noir et blanc, composants   | UX/FE | direction validée | M     | Palette en variables      | 🟡   |
+| T20 | Accueil, classement, calendrier/résultats | FE    | T16, T19          | M     | Lisible à 360 px de large | 🟡   |
+| T21 | Détail match, clubs, fiche club           | FE    | T20               | M     |                           | ✅   |
+| T22 | Joueurs, fiche joueur, statistiques       | FE    | T17, T20          | M     | 3 derniers clubs affichés | ✅   |
 
 Écarts : routes publiques `/matchs` et `/statistiques` (au lieu de calendrier et stats) ; à contrôler à l'œil : typographies (décision 83), lisibilité à 360 px, palette définitive encore à fournir.
 
 ## Sprint 7 — Tests et mise en ligne
 
-| ID  | Tâche                                                | Resp. | Dépend de | Diff. | Validation                   | État |
-| --- | ---------------------------------------------------- | ----- | --------- | ----- | ---------------------------- | ---- |
-| T23 | Tests du classement, des permissions, du calendrier  | QA    | tout      | M     | Plan de test passé           | 🟡   |
-| T24 | Test sur vrai smartphone en 4G, optimisation images  | QA/FE | T22       | M     | Accueil chargé en moins de 3 s | ⬜   |
-| T25 | Sauvegarde de la base et saisie de vraies données    | OPS   | T24       | F     | Export restaurable           | ⬜   |
-| T26 | Mise en ligne                                        | OPS   | T25       | F     | Site public accessible       | ⬜   |
+| ID  | Tâche                                               | Resp. | Dépend de | Diff. | Validation                     | État |
+| --- | --------------------------------------------------- | ----- | --------- | ----- | ------------------------------ | ---- |
+| T23 | Tests du classement, des permissions, du calendrier | QA    | tout      | M     | Plan de test passé             | ✅   |
+| T24 | Test sur vrai smartphone en 4G, optimisation images | QA/FE | T22       | M     | Accueil chargé en moins de 3 s | ⬜   |
+| T25 | Sauvegarde de la base et saisie de vraies données   | OPS   | T24       | F     | Export restaurable             | ⬜   |
+| T26 | Mise en ligne                                       | OPS   | T25       | F     | Site public accessible         | ⬜   |
 
-Écarts : T23 en cours par la QA (tests unitaires présents dans `tests/unit/`). T25 : scripts `scripts/backup.sh`, `restore.sh`, `env.sh` prêts ; reste pg_dump 18 et les vraies données. T24 et T26 dépendent de l'utilisateur.
+Écarts : T23 : tests automatiques passés (69 Vitest), tests manuels du plan à cocher sur le site déployé. T25 : scripts `scripts/backup.sh`, `restore.sh`, `env.sh` prêts ; reste pg_dump 18 et les vraies données. T24 et T26 dépendent de l'utilisateur.
 
 ## V1 (après lancement)
 

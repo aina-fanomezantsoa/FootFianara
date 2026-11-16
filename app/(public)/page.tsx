@@ -1,5 +1,10 @@
 import { ButtonLink } from "@/app/_components/ui/Button";
-import { CalendrierVide, DivisionTabs, EmptyState, Section } from "@/app/_components/public/Blocs";
+import {
+  CalendrierVide,
+  DivisionTabs,
+  EmptyState,
+  Section,
+} from "@/app/_components/public/Blocs";
 import { MatchList } from "@/app/_components/public/MatchCard";
 import { StandingsTable } from "@/app/_components/public/StandingsTable";
 import { contexte, derniersResultats, prochainsMatchs } from "@/lib/public";
@@ -11,7 +16,9 @@ export default async function Accueil({ searchParams }: PageProps<"/">) {
   if (!saison)
     return (
       <>
-        <h1 className="title-sport text-3xl sm:text-4xl">Championnat de Fianarantsoa</h1>
+        <h1 className="title-sport text-3xl sm:text-4xl">
+          Championnat de Fianarantsoa
+        </h1>
         <CalendrierVide />
       </>
     );
@@ -29,7 +36,10 @@ export default async function Accueil({ searchParams }: PageProps<"/">) {
       </h1>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <Section titre="Prochains matchs" lien={{ label: "Calendrier", href: "/matchs" }}>
+          <Section
+            titre="Prochains matchs"
+            lien={{ label: "Calendrier", href: "/matchs" }}
+          >
             {prochains.length ? (
               <MatchList matchs={prochains} division />
             ) : (
@@ -45,7 +55,11 @@ export default async function Accueil({ searchParams }: PageProps<"/">) {
           </Section>
         </div>
         <Section titre="Classement">
-          <DivisionTabs divisions={divisions} active={division?.name} path="/" />
+          <DivisionTabs
+            divisions={divisions}
+            active={division?.name}
+            path="/"
+          />
           {classement.length ? (
             <>
               <StandingsTable rows={classement} compact limit={5} />

@@ -6,7 +6,11 @@ import { ClubCrest } from "./ClubCrest";
 export function Score({ m, className }: { m: MatchPublic; className: string }) {
   if (m.status === "POSTPONED") return <Badge>Reporté</Badge>;
   if (m.status === "SCHEDULED")
-    return <span className={className}>{m.kickoffAt ? heure(m.kickoffAt) : "–"}</span>;
+    return (
+      <span className={className}>
+        {m.kickoffAt ? heure(m.kickoffAt) : "–"}
+      </span>
+    );
   return (
     <span className={`num flex items-center ${className}`}>
       <span className="min-w-[1.2em] text-center">{m.homeGoals}</span>
@@ -16,9 +20,16 @@ export function Score({ m, className }: { m: MatchPublic; className: string }) {
   );
 }
 
-const joue = (m: MatchPublic) => m.status === "PLAYED" || m.status === "FORFEIT";
+const joue = (m: MatchPublic) =>
+  m.status === "PLAYED" || m.status === "FORFEIT";
 
-export function MatchCard({ m, division = false }: { m: MatchPublic; division?: boolean }) {
+export function MatchCard({
+  m,
+  division = false,
+}: {
+  m: MatchPublic;
+  division?: boolean;
+}) {
   const home = m.homeClubSeason.club;
   const away = m.awayClubSeason.club;
   const perdu = (g: number | null, autre: number | null) =>
@@ -30,7 +41,9 @@ export function MatchCard({ m, division = false }: { m: MatchPublic; division?: 
   const camp = (c: typeof home, cls: string) => (
     <span className={`flex min-w-0 flex-col items-center gap-1 ${cls}`}>
       <ClubCrest shortName={c.shortName} logoUrl={c.logoUrl} />
-      <span className="w-full truncate text-center text-sm font-semibold">{c.shortName}</span>
+      <span className="w-full truncate text-center text-sm font-semibold">
+        {c.shortName}
+      </span>
     </span>
   );
   return (
@@ -57,7 +70,13 @@ export function MatchCard({ m, division = false }: { m: MatchPublic; division?: 
 }
 
 /** Liste de cartes : pile sur mobile, 2 colonnes à partir de md. */
-export function MatchList({ matchs, division }: { matchs: MatchPublic[]; division?: boolean }) {
+export function MatchList({
+  matchs,
+  division,
+}: {
+  matchs: MatchPublic[];
+  division?: boolean;
+}) {
   return (
     <ul className="grid gap-3 md:grid-cols-2">
       {matchs.map((m) => (

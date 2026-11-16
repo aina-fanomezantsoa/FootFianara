@@ -45,11 +45,18 @@ export const DivisionTabs = ({
   <Tabs
     ariaLabel="Divisions"
     active={active}
-    items={divisions.map((d) => ({ label: d.name, href: `${path}?division=${d.name}` }))}
+    items={divisions.map((d) => ({
+      label: d.name,
+      href: `${path}?division=${d.name}`,
+    }))}
   />
 );
 
-export const JoueursTabs = ({ active }: { active: "Joueurs" | "Statistiques" }) => (
+export const JoueursTabs = ({
+  active,
+}: {
+  active: "Joueurs" | "Statistiques";
+}) => (
   <Tabs
     ariaLabel="Joueurs et statistiques"
     active={active}
@@ -104,7 +111,10 @@ export function Section({
       <div className="flex items-center justify-between">
         <h2 className="title-sport text-xl">{titre}</h2>
         {lien && (
-          <Link href={lien.href} className="flex min-h-11 items-center text-sm text-muted hover:text-foreground">
+          <Link
+            href={lien.href}
+            className="flex min-h-11 items-center text-sm text-muted hover:text-foreground"
+          >
             {lien.label}
           </Link>
         )}

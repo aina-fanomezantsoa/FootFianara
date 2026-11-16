@@ -10,7 +10,10 @@ describe("calendrier complet", () => {
   it("chaque paire non ordonnée se rencontre exactement deux fois, domicile/extérieur inversés", () => {
     for (const a of ids.map(Number))
       for (const b of ids.map(Number).filter((x) => x > a)) {
-        const m = cal.filter((f) => [f.home, f.away].sort((x, y) => x - y).join() === [a, b].join());
+        const m = cal.filter(
+          (f) =>
+            [f.home, f.away].sort((x, y) => x - y).join() === [a, b].join(),
+        );
         expect(m).toHaveLength(2);
         expect(m[0].home).toBe(m[1].away);
       }
@@ -35,13 +38,23 @@ describe("classement sur saison complète", () => {
         status: "PLAYED" as const,
       })),
     );
-    expect(rows.every((r) => r.points === 22 && r.drawn === 22 && r.played === 22)).toBe(true);
+    expect(
+      rows.every((r) => r.points === 22 && r.drawn === 22 && r.played === 22),
+    ).toBe(true);
     expect(rows.every((r) => r.needsAdminDecision)).toBe(true);
   });
   it("une défaite incrémente lost sans point", () => {
     const rows = computeStandings(
       ["A", "B"],
-      [{ homeId: "A", awayId: "B", homeGoals: 0, awayGoals: 1, status: "PLAYED" }],
+      [
+        {
+          homeId: "A",
+          awayId: "B",
+          homeGoals: 0,
+          awayGoals: 1,
+          status: "PLAYED",
+        },
+      ],
     );
     const [b, a] = [rows[0], rows[1]];
     expect(b).toMatchObject({ clubId: "B", won: 1, points: 3 });

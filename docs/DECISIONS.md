@@ -115,7 +115,28 @@ Statut : ✅ validé · 🟡 provisoire (à confirmer) · ❓ ouvert
 | 75  | Domaine                | Aucun : adresse gratuite fournie par l'hébergeur                                                          | ✅     |
 | 76  | Sprint 1               | Lancé                                                                                                     | ✅     |
 
+## Série 8 — Résultats et discipline, choix techniques (2026-11-15)
+
+| #   | Sujet                    | Décision                                                                                                                                                                      | Statut |
+| --- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 77  | Compteur de jaunes       | Par saison ; chaque tranche de 5 jaunes déclenche 2 matchs et remet le compteur à zéro (décision 72) ; remise à zéro en fin de saison (hypothèse des points ouverts)          | 🟡     |
+| 78  | Rouge et jaunes du match | Un rouge = 2 matchs ; les jaunes reçus dans le même match ne comptent pas au cumul (double jaune = rouge)                                                                     | 🟡     |
+| 79  | Purge de la suspension   | Calculée automatiquement : chaque match suivant du club du joueur (joué ou forfait) dans la saison compte ; ordre chronologique par date du match puis journée                | 🟡     |
+| 80  | Suspensions automatiques | Recalculées entièrement après chaque saisie, correction ou forfait (`Suspension.seasonId` et `matchId` renseignés) ; les suspensions saisies à la main (matchId vide) restent | ✅     |
+| 81  | Stockage du forfait      | Score 0-3 / 3-0 enregistré sur le match, sans événements ; le fautif se déduit du score                                                                                       | ✅     |
+| 82  | Correction               | L'assistant fait la première saisie ; un match déjà joué ou forfait ne se corrige que par l'admin                                                                             | ✅     |
+
+## Série 9 — Design du site public (2026-11-15)
+
+| #   | Sujet                  | Décision                                                                                                                           | Statut |
+| --- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 83  | Typographies           | Barlow Condensed (titres, scores, capitales) et Inter (texte, tableaux, chiffres tabulaires) via next/font ; voir DESIGN_PUBLIC.md | 🟡     |
+| 84  | Nombre impair de clubs | Génération du calendrier refusée (pas de club exempt) ; la division doit compter un nombre pair de clubs                           | ✅     |
+| 85  | Suspension manuelle    | Rattachée à la saison la plus récente ; seule une manuelle peut être marquée purgée à la main (les automatiques se recalculent)    | ✅     |
+| 86  | Saisie de la date      | Un seul champ date et heure (heure de Madagascar, UTC+3)                                                                           | ✅     |
+| 87  | Remplacements          | Saisis avec le résultat dans le même formulaire                                                                                    | ✅     |
+
 ## Points encore ouverts
 
-- Remise à zéro des jaunes en fin de saison (hypothèse : oui)
+- Remise à zéro des jaunes en fin de saison (hypothèse appliquée : oui, décision 77)
 - Nombre de coupes (une par division ou une seule) (V2)

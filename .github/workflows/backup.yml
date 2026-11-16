@@ -1,0 +1,40 @@
+name: Weekly Database Backup
+
+on:
+  schedule:
+    - cron: "0 2 * * 1" # lundi 02:00 UTC (05:00 à Madagascar)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    env:
+      PG_MAJOR: "18" # doit être >= à la version du serveur Neon (SHOW server_version)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq "postgresql-client-$PG_MAJOR"
+          echo "/usr/lib/postgresql/$PG_MAJOR/bin" >> "$GITHUB_PATH"
+
+      - name: Dump database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: bash scripts/backup.sh
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_id }}
+          path: backups/*.dump
+          retention-days: 90
+          if-no-files-found: error

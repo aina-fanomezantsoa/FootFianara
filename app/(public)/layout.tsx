@@ -23,7 +23,7 @@ export default function PublicLayout({ children }: LayoutProps<"/">) {
       </main>
       <nav
         aria-label="Navigation principale"
-        className="fixed inset-x-0 bottom-0 z-10 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+        className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-10 rounded-full border border-border bg-background p-2 md:hidden"
       >
         <Nav />
       </nav>

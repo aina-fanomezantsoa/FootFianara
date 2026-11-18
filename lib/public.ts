@@ -169,6 +169,9 @@ export const matchsDivision = (seasonId: number, divisionId: number) =>
     select: matchSelect,
   });
 
+export const actualites = (take?: number) =>
+  db.news.findMany({ orderBy: { publishedAt: "desc" }, take });
+
 /** Dernière journée ayant un match joué ou forfait, null si aucune. */
 export const derniereJournee = async (seasonId: number, divisionId: number) =>
   (

@@ -3,16 +3,32 @@ import {
   CalendrierVide,
   DivisionTabs,
   EmptyState,
+  NewsCard,
   Section,
 } from "@/app/_components/public/Blocs";
 import { MatchList } from "@/app/_components/public/MatchCard";
 import { StandingsTable } from "@/app/_components/public/StandingsTable";
-import { contexte, derniersResultats, prochainsMatchs } from "@/lib/public";
+import {
+  actualites,
+  contexte,
+  derniersResultats,
+  prochainsMatchs,
+} from "@/lib/public";
 import { getStandings } from "@/lib/standings-db";
 
 export default async function Accueil({ searchParams }: PageProps<"/">) {
   const { division: param } = await searchParams;
-  const { saison, divisions, division } = await contexte(String(param ?? ""));
+  const [{ saison, divisions, division }, news] = await Promise.all([
+    contexte(String(param ?? "")),
+    actualites(3),
+  ]);
+  const bloc = news.length > 0 && (
+    <Section titre="Actualités" lien={{ label: "Toutes", href: "/actualites" }}>
+      {news.map((n) => (
+        <NewsCard key={n.id} news={n} court />
+      ))}
+    </Section>
+  );
   if (!saison)
     return (
       <>
@@ -20,6 +36,7 @@ export default async function Accueil({ searchParams }: PageProps<"/">) {
           Championnat de Fianarantsoa
         </h1>
         <CalendrierVide />
+        {bloc}
       </>
     );
   const where = { seasonId: saison.id };
@@ -53,6 +70,7 @@ export default async function Accueil({ searchParams }: PageProps<"/">) {
               <EmptyState title="Aucun résultat pour l'instant" />
             )}
           </Section>
+          {bloc}
         </div>
         <Section titre="Classement">
           <DivisionTabs

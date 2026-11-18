@@ -25,6 +25,7 @@ export default async function Admin({
           ["/admin/stades", "Stades", "STA"],
           ["/admin/clubs", "Clubs", "CLU"],
           ["/admin/joueurs", "Joueurs", "JOU"],
+          ["/admin/actualites", "Actualités", "ACT"],
         ] as [string, string, string][])),
     ...(user.role === "SUPER_ADMIN"
       ? ([["/admin/comptes", "Gérer les comptes", "CPT"]] as [

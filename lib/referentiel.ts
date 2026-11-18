@@ -35,6 +35,14 @@ export function parseStade(
   return { data: { name, city: txt(f.get("city")) || null } };
 }
 
+export function parseNews(f: FormData): Valid<{ title: string; body: string }> {
+  const title = txt(f.get("title"));
+  const body = txt(f.get("body"));
+  if (!title || !body) return { erreur: "Titre et texte requis." };
+  if (title.length > 140) return { erreur: "Titre : 140 caractères maximum." };
+  return { data: { title, body } };
+}
+
 // --- Clubs et joueurs (T09, T10) ---
 
 const opt = (v: FormDataEntryValue | null) => txt(v) || null;

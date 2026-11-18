@@ -102,7 +102,7 @@ function NavLinks({ bureau, p }: { bureau: boolean; p: string }) {
       </ul>
     );
   return (
-    <ul className="grid grid-cols-5">
+    <ul className="flex items-center justify-between">
       {liens
         .filter((l) => !l.bureau)
         .map((l) => {
@@ -111,14 +111,12 @@ function NavLinks({ bureau, p }: { bureau: boolean; p: string }) {
             <li key={l.href}>
               <Link
                 href={l.href}
+                aria-label={l.label}
                 aria-current={actif ? "page" : undefined}
-                className={`relative flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] uppercase ${actif ? "text-foreground" : "text-muted"}`}
+                className={`flex h-11 items-center justify-center gap-2 rounded-full text-sm font-medium transition-colors ${actif ? "bg-border px-4 text-foreground" : "w-11 text-foreground"}`}
               >
-                {actif && (
-                  <span className="absolute inset-x-3 top-0 h-0.5 bg-foreground" />
-                )}
                 {l.icone}
-                {l.label}
+                {actif && l.label}
               </Link>
             </li>
           );

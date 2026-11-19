@@ -106,30 +106,27 @@ export function NewsCard({
   const texte = (
     <>
       <h3 className="font-semibold">{news.title}</h3>
-      <p
-        className={`text-xs ${news.imageUrl ? "text-white/70" : "text-muted"}`}
-      >
-        {dateComplete(news.publishedAt)}
-      </p>
+      <p className="text-xs text-muted">{dateComplete(news.publishedAt)}</p>
       <p className={`whitespace-pre-line ${court ? "line-clamp-3" : ""}`}>
         {news.body}
       </p>
     </>
   );
   if (!news.imageUrl) return <Card className="space-y-2">{texte}</Card>;
-  // Image plein cadre ; panneau de texte « verre » (flou + voile) en bas, texte blanc quel que soit le thème.
+  // Image en haut qui s'estompe vers le panneau de texte clair en dessous.
   return (
-    <article className="relative flex min-h-72 flex-col justify-end overflow-hidden rounded-xl border border-border">
-      {/* eslint-disable-next-line @next/next/no-img-element -- image Cloudinary réduite pour la 4G */}
-      <img
-        src={imageReduite(news.imageUrl, 800)}
-        alt=""
-        loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <div className="relative m-2 space-y-2 rounded-lg border border-white/20 bg-black/35 p-4 text-white backdrop-blur-md">
-        {texte}
+    <article className="overflow-hidden rounded-3xl border border-border bg-background shadow-lg">
+      <div className="relative h-44">
+        {/* eslint-disable-next-line @next/next/no-img-element -- image Cloudinary réduite pour la 4G */}
+        <img
+          src={imageReduite(news.imageUrl, 800)}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-background" />
       </div>
+      <div className="relative -mt-6 space-y-2 px-5 pb-5">{texte}</div>
     </article>
   );
 }

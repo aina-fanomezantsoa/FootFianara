@@ -103,23 +103,34 @@ export function NewsCard({
   };
   court?: boolean;
 }) {
-  return (
-    <Card className="space-y-2">
-      {news.imageUrl && (
-        // eslint-disable-next-line @next/next/no-img-element -- image Cloudinary réduite pour la 4G
-        <img
-          src={imageReduite(news.imageUrl, 800)}
-          alt=""
-          loading="lazy"
-          className="max-h-60 w-full rounded-sm object-cover"
-        />
-      )}
+  const texte = (
+    <>
       <h3 className="font-semibold">{news.title}</h3>
-      <p className="text-xs text-muted">{dateComplete(news.publishedAt)}</p>
+      <p
+        className={`text-xs ${news.imageUrl ? "text-white/70" : "text-muted"}`}
+      >
+        {dateComplete(news.publishedAt)}
+      </p>
       <p className={`whitespace-pre-line ${court ? "line-clamp-3" : ""}`}>
         {news.body}
       </p>
-    </Card>
+    </>
+  );
+  if (!news.imageUrl) return <Card className="space-y-2">{texte}</Card>;
+  // Image plein cadre ; panneau de texte « verre » (flou + voile) en bas, texte blanc quel que soit le thème.
+  return (
+    <article className="relative flex min-h-72 flex-col justify-end overflow-hidden rounded-xl border border-border">
+      {/* eslint-disable-next-line @next/next/no-img-element -- image Cloudinary réduite pour la 4G */}
+      <img
+        src={imageReduite(news.imageUrl, 800)}
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="relative m-2 space-y-2 rounded-lg border border-white/20 bg-black/35 p-4 text-white backdrop-blur-md">
+        {texte}
+      </div>
+    </article>
   );
 }
 

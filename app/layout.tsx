@@ -20,7 +20,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="fr"
       className={`${inter.variable} ${barlow.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Applique le thème choisi avant le premier affichage (évite le flash). Sombre par défaut. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{document.documentElement.dataset.theme=localStorage.getItem("theme")==="light"?"light":"dark"}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

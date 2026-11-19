@@ -1,12 +1,22 @@
 @import "tailwindcss";
 
-/* Palette monochrome : noir, blanc, 3 gris. Mode sombre par défaut (clair en V1). */
+/* Palette monochrome : noir, blanc, 3 gris. Mode sombre par défaut ; le clair s'active via data-theme="light" sur <html>. */
 :root {
+  color-scheme: dark;
   --background: #000000;
   --surface: #111111;
   --border: #2a2a2a;
   --muted: #9a9a9a;
   --foreground: #ffffff;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #ffffff;
+  --surface: #f4f4f4;
+  --border: #dcdcdc;
+  --muted: #666666;
+  --foreground: #000000;
 }
 
 @theme inline {

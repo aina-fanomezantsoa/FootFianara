@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ButtonLink } from "@/app/_components/ui/Button";
 import { Card } from "@/app/_components/ui/Card";
+import { dateComplete, imageReduite } from "@/lib/public";
 
 /** Onglets en simples liens (page serveur partageable). Sert aux divisions et à « Joueurs | Statistiques ». */
 export function Tabs({
@@ -85,6 +86,39 @@ export function EmptyState({
           {action.label}
         </ButtonLink>
       )}
+    </Card>
+  );
+}
+
+/** Actualité ; `court` tronque le texte (accueil), sinon texte complet. */
+export function NewsCard({
+  news,
+  court = false,
+}: {
+  news: {
+    title: string;
+    body: string;
+    imageUrl: string | null;
+    publishedAt: Date;
+  };
+  court?: boolean;
+}) {
+  return (
+    <Card className="space-y-2">
+      {news.imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element -- image Cloudinary réduite pour la 4G
+        <img
+          src={imageReduite(news.imageUrl, 800)}
+          alt=""
+          loading="lazy"
+          className="max-h-60 w-full rounded-sm object-cover"
+        />
+      )}
+      <h3 className="font-semibold">{news.title}</h3>
+      <p className="text-xs text-muted">{dateComplete(news.publishedAt)}</p>
+      <p className={`whitespace-pre-line ${court ? "line-clamp-3" : ""}`}>
+        {news.body}
+      </p>
     </Card>
   );
 }

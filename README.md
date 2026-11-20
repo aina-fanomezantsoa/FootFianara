@@ -14,7 +14,7 @@
 
 ## Le projet : problème et objectif
 
-TODO : en 2-3 phrases, quel problème réel (qui consulte les résultats aujourd'hui ? combien de clubs, de joueurs ?) et pour qui.
+Les résultats et le classement du championnat de Fianarantsoa sont aujourd'hui publiés surtout sur les pages Facebook de chaque club : l'information est dispersée et difficile à suivre. Foot Fianara la centralise sur un seul site, conçu pour les supporters : classement, calendrier, résultats, fiches des clubs et des joueurs.
 
 ## Fonctionnalités clés
 
@@ -43,29 +43,31 @@ Visiteur ──► Site public ─┐
 Admin ─────► Espace admin ┘                                                          └─► Images (CDN)
 ```
 
-## Défis techniques et apprentissages
+## Défis techniques
 
 - Règles de classement et de suspensions isolées dans une couche métier testée unitairement
 - Génération de calendrier équilibrée
 - Contrôle d'accès par rôles sur toute l'administration
 - Sauvegardes automatiques de la base
 
-TODO : ajouter 1-2 anecdotes personnelles (un bug difficile, un choix revu).
+Le point le plus délicat a été la mise en place des clubs et des joueurs : modélisation des effectifs, logos et photos.
 
 ## Résultats
 
 - 15 fichiers de tests unitaires, CI complète (lint, types, tests, audit, build, analyse de sécurité)
-- TODO : nombre d'utilisateurs, score Lighthouse
+- Saison pas encore lancée : mesures d'usage à venir
 
 ## Démo
 
 **https://foot-fianara.vercel.app**
 
-TODO : lien vers une courte vidéo de démonstration.
-
 ## À propos de moi
 
-TODO : rôle recherché, LinkedIn, contact.
+Développeur full stack junior.
+
+- LinkedIn : [aina-fanomezantsoa](https://www.linkedin.com/in/aina-fanomezantsoa-b4ab6b370/)
+- Email : f.ainaandria@gmail.com
+- Téléphone : +261 34 74 28 707
 
 ## Licence
 

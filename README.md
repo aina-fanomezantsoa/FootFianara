@@ -7,10 +7,10 @@
 
 ![Accueil](docs/img/accueil-1.jpeg)
 
-| Classement | Matchs |
-| --- | --- |
-| ![Classement](docs/img/classement.jpeg) | ![Matchs](docs/img/matchs.jpeg) |
-| ![Clubs](docs/img/clubs.jpeg) | ![Joueurs](docs/img/joueurs.jpeg) |
+| Classement                              | Matchs                            |
+| --------------------------------------- | --------------------------------- |
+| ![Classement](docs/img/classement.jpeg) | ![Matchs](docs/img/matchs.jpeg)   |
+| ![Clubs](docs/img/clubs.jpeg)           | ![Joueurs](docs/img/joueurs.jpeg) |
 
 ## Le projet : problème et objectif
 
@@ -26,14 +26,14 @@ TODO : en 2-3 phrases, quel problème réel (qui consulte les résultats aujourd
 
 ## Stack technique
 
-| Couche | Techno | Pourquoi ce choix |
-| --- | --- | --- |
-| Front + back | Next.js 16, React 19, TypeScript | Un seul projet pour le site public et l'admin |
-| Données | PostgreSQL, Prisma | Typage de bout en bout |
-| Authentification | Auth.js | Sessions et rôles |
-| Images | Cloudinary | Stockage externe des logos et photos |
-| Qualité | Vitest, ESLint, Prettier, GitHub Actions | Contrôles à chaque push |
-| Hébergement | Vercel | Déploiement continu |
+| Couche           | Techno                                   | Pourquoi ce choix                             |
+| ---------------- | ---------------------------------------- | --------------------------------------------- |
+| Front + back     | Next.js 16, React 19, TypeScript         | Un seul projet pour le site public et l'admin |
+| Données          | PostgreSQL, Prisma                       | Typage de bout en bout                        |
+| Authentification | Auth.js                                  | Sessions et rôles                             |
+| Images           | Cloudinary                               | Stockage externe des logos et photos          |
+| Qualité          | Vitest, ESLint, Prettier, GitHub Actions | Contrôles à chaque push                       |
+| Hébergement      | Vercel                                   | Déploiement continu                           |
 
 ## Architecture
 

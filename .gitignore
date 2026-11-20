@@ -49,3 +49,8 @@ next-env.d.ts
 .claude/worktrees/
 # Sauvegardes de la base (données réelles, jamais commitées)
 /backups/
+
+# Divers
+*.log
+.idea/
+.vscode/

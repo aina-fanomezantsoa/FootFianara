@@ -46,7 +46,7 @@ next-env.d.ts
 !.env.example
 
 # Worktrees des agents Claude
-.claude/worktrees/
+.claude/
 # Sauvegardes de la base (données réelles, jamais commitées)
 /backups/
 
@@ -54,3 +54,8 @@ next-env.d.ts
 *.log
 .idea/
 .vscode/
+
+# Config outillage IA et documentation interne (privées)
+.mcp.json
+docs/*.md
+/Logo/

@@ -5,8 +5,12 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![Statut](https://img.shields.io/badge/statut-en%20ligne-brightgreen)
 
-<!-- TODO : ajouter une capture ou un GIF (accueil + classement) -->
-![aperçu](docs/img/apercu.png)
+![Accueil](docs/img/accueil-1.jpeg)
+
+| Classement | Matchs |
+| --- | --- |
+| ![Classement](docs/img/classement.jpeg) | ![Matchs](docs/img/matchs.jpeg) |
+| ![Clubs](docs/img/clubs.jpeg) | ![Joueurs](docs/img/joueurs.jpeg) |
 
 ## Le projet : problème et objectif
 
@@ -65,4 +69,4 @@ TODO : rôle recherché, LinkedIn, contact.
 
 ## Licence
 
-TODO : choisir une licence (voir `RECRUITER_PLAN.md`).
+[MIT](LICENSE)

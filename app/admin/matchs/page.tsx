@@ -40,7 +40,8 @@ export default async function Matchs({
     }),
     db.clubSeason.count({ where: { seasonId, divisionId } }),
   ]);
-  const journees = Map.groupBy(matchs, (m) => m.matchday);
+  // Journées à venir en haut, première journée en bas.
+  const journees = [...Map.groupBy(matchs, (m) => m.matchday)].reverse();
 
   return (
     <main className="mx-auto max-w-2xl p-4 sm:p-6">
@@ -88,7 +89,7 @@ export default async function Matchs({
         </div>
       )}
 
-      {[...journees].map(([j, liste]) => (
+      {journees.map(([j, liste]) => (
         <section key={j} id={`j${j}`} className="mb-6">
           <h2 className="title-sport mb-2 text-lg">Journée {j}</h2>
           <ul className="divide-y divide-border border-y border-border">

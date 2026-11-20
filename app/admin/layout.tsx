@@ -1,9 +1,15 @@
 import { Suspense } from "react";
 import { requireRole } from "@/lib/auth";
+import { VoirSite } from "./VoirSite";
 
 async function Garde({ children }: { children: React.ReactNode }) {
   await requireRole("ASSISTANT");
-  return <>{children}</>;
+  return (
+    <>
+      <VoirSite />
+      {children}
+    </>
+  );
 }
 
 // Cache Components : les données de requête (cookies) doivent être sous <Suspense>.

@@ -105,11 +105,13 @@ export function NewsCard({
 }) {
   const texte = (
     <>
-      <h3 className="font-semibold">{news.title}</h3>
-      <p className="text-xs text-muted">{dateComplete(news.publishedAt)}</p>
-      <p className={`whitespace-pre-line ${court ? "line-clamp-3" : ""}`}>
+      <h3 className="text-xl font-bold leading-tight">{news.title}</h3>
+      <p
+        className={`whitespace-pre-line text-sm ${court ? "line-clamp-3" : ""}`}
+      >
         {news.body}
       </p>
+      <p className="text-xs text-muted">{dateComplete(news.publishedAt)}</p>
     </>
   );
   if (!news.imageUrl) return <Card className="space-y-2">{texte}</Card>;

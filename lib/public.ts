@@ -83,6 +83,10 @@ export const heure = (d: Date) =>
 export const diffSignee = (n: number) =>
   n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
 
+/** Actualité publiée depuis moins de 7 jours : étiquette « Nouvelle ». */
+export const estNouvelle = (publiee: Date, now: Date) =>
+  now.getTime() - publiee.getTime() < 7 * 24 * 3600 * 1000;
+
 /** Âge révolu à la date `now`. */
 export function age(naissance: Date, now: Date) {
   let a = now.getUTCFullYear() - naissance.getUTCFullYear();
@@ -171,6 +175,8 @@ export const matchsDivision = (seasonId: number, divisionId: number) =>
 
 export const actualites = (take?: number) =>
   db.news.findMany({ orderBy: { publishedAt: "desc" }, take });
+
+export const actualite = (id: number) => db.news.findUnique({ where: { id } });
 
 /** Dernière journée ayant un match joué ou forfait, null si aucune. */
 export const derniereJournee = async (seasonId: number, divisionId: number) =>

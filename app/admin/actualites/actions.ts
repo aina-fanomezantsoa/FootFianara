@@ -24,6 +24,7 @@ async function valider(f: FormData): Promise<Valid<News>> {
 const publier = () => {
   revalidatePath("/");
   revalidatePath("/actualites");
+  revalidatePath("/actualites/[id]", "page");
 };
 
 export async function creerNews(f: FormData) {

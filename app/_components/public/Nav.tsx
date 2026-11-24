@@ -20,50 +20,56 @@ const svg = (d: ReactNode) => (
   </svg>
 );
 
-const liens = [
+const liens: {
+  label: string;
+  href: string;
+  icone: ReactNode;
+  autres?: string[];
+}[] = [
   {
     label: "Accueil",
     href: "/",
     icone: svg(<path d="M3 11 12 4l9 7M5 10v10h14V10" />),
-    actif: (p: string) => p === "/",
   },
   {
-    label: "Classement",
-    href: "/classement",
-    icone: svg(<path d="M4 6h2M4 12h2M4 18h2M9 6h11M9 12h11M9 18h11" />),
-  },
-  {
-    label: "Matchs",
-    href: "/matchs",
+    label: "Actualités",
+    href: "/actualites",
     icone: svg(
       <>
-        <rect x="3" y="5" width="18" height="16" rx="1" />
-        <path d="M3 10h18M8 3v4M16 3v4" />
+        <rect x="3" y="4" width="18" height="16" rx="1" />
+        <path d="M7 8h10M7 12h10M7 16h6" />
       </>,
     ),
   },
   {
-    label: "Clubs",
-    href: "/clubs",
-    icone: svg(<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6Z" />),
+    label: "Ligue",
+    href: "/ligue",
+    icone: svg(
+      <path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v7M8 20h8" />,
+    ),
+    // Pages de la D1 atteintes depuis /ligue.
+    autres: ["/classement", "/matchs", "/clubs"],
   },
   {
-    label: "Joueurs",
-    href: "/joueurs",
+    label: "Section",
+    href: "/section",
     icone: svg(
       <>
-        <circle cx="12" cy="8" r="4" />
-        <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" />
+        <rect x="4" y="4" width="7" height="7" rx="1" />
+        <rect x="13" y="4" width="7" height="7" rx="1" />
+        <rect x="4" y="13" width="7" height="7" rx="1" />
+        <rect x="13" y="13" width="7" height="7" rx="1" />
       </>,
     ),
-    autres: ["/statistiques"],
   },
-  { label: "Statistiques", href: "/statistiques", bureau: true },
 ];
 
 const estActif = (l: (typeof liens)[number], p: string) =>
-  l.actif?.(p) ??
-  [l.href, ...(l.autres ?? [])].some((h) => p === h || p.startsWith(h + "/"));
+  l.href === "/"
+    ? p === "/"
+    : [l.href, ...(l.autres ?? [])].some(
+        (h) => p === h || p.startsWith(h + "/"),
+      );
 
 /** Barre basse (mobile) ou liens d'en-tête (bureau), sous <Suspense> : usePathname est une donnée de requête. */
 export function Nav({ bureau = false }: { bureau?: boolean }) {
@@ -78,15 +84,12 @@ function NavActive({ bureau }: { bureau: boolean }) {
   return <NavLinks bureau={bureau} p={usePathname()} />;
 }
 
-/** Statistiques n'est que sur bureau. */
 function NavLinks({ bureau, p }: { bureau: boolean; p: string }) {
   if (bureau)
     return (
       <ul className="hidden gap-5 md:flex">
         {liens.map((l) => {
-          // Sur bureau, Statistiques a son lien : Joueurs n'est plus actif sur /statistiques.
-          const actif =
-            l.href === "/joueurs" ? p.startsWith("/joueurs") : estActif(l, p);
+          const actif = estActif(l, p);
           return (
             <li key={l.href}>
               <Link
@@ -103,24 +106,22 @@ function NavLinks({ bureau, p }: { bureau: boolean; p: string }) {
     );
   return (
     <ul className="flex items-center justify-between">
-      {liens
-        .filter((l) => !l.bureau)
-        .map((l) => {
-          const actif = estActif(l, p);
-          return (
-            <li key={l.href}>
-              <Link
-                href={l.href}
-                aria-label={l.label}
-                aria-current={actif ? "page" : undefined}
-                className={`flex h-11 items-center justify-center gap-2 rounded-full text-sm font-medium transition-colors ${actif ? "bg-border px-4 text-foreground" : "w-11 text-foreground"}`}
-              >
-                {l.icone}
-                {actif && l.label}
-              </Link>
-            </li>
-          );
-        })}
+      {liens.map((l) => {
+        const actif = estActif(l, p);
+        return (
+          <li key={l.href}>
+            <Link
+              href={l.href}
+              aria-label={l.label}
+              aria-current={actif ? "page" : undefined}
+              className={`flex h-11 items-center justify-center gap-2 rounded-full text-sm font-medium transition-colors ${actif ? "bg-border px-4 text-foreground" : "w-11 text-foreground"}`}
+            >
+              {l.icone}
+              {actif && l.label}
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }

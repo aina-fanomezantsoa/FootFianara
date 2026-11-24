@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ButtonLink } from "@/app/_components/ui/Button";
 import { Card } from "@/app/_components/ui/Card";
-import { dateComplete, imageReduite } from "@/lib/public";
+import { Badge } from "@/app/_components/ui/Badge";
+import { dateComplete, estNouvelle } from "@/lib/public";
 
 /** Onglets en simples liens (page serveur partageable). Sert aux divisions et à « Joueurs | Statistiques ». */
 export function Tabs({
@@ -90,48 +91,42 @@ export function EmptyState({
   );
 }
 
-/** Actualité ; `court` tronque le texte (accueil), sinon texte complet. */
+/** Carte d'actualité cliquable, même style que MatchCard ; l'article complet est sur /actualites/[id]. */
 export function NewsCard({
   news,
-  court = false,
 }: {
-  news: {
-    title: string;
-    body: string;
-    imageUrl: string | null;
-    publishedAt: Date;
-  };
-  court?: boolean;
+  news: { id: number; title: string; body: string; publishedAt: Date };
 }) {
-  const texte = (
-    <>
-      <h3 className="text-xl font-bold leading-tight">{news.title}</h3>
-      <p
-        className={`whitespace-pre-line text-sm ${court ? "line-clamp-3" : ""}`}
-      >
-        {news.body}
-      </p>
-      <p className="text-xs text-muted">{dateComplete(news.publishedAt)}</p>
-    </>
-  );
-  if (!news.imageUrl) return <Card className="space-y-2">{texte}</Card>;
-  // Image en haut qui s'estompe vers le panneau de texte clair en dessous.
   return (
-    <article className="overflow-hidden rounded-3xl border border-border bg-background shadow-lg">
-      <div className="relative h-44">
-        {/* eslint-disable-next-line @next/next/no-img-element -- image Cloudinary réduite pour la 4G */}
-        <img
-          src={imageReduite(news.imageUrl, 800)}
-          alt=""
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-background" />
-      </div>
-      <div className="relative -mt-6 space-y-2 px-5 pb-5">{texte}</div>
-    </article>
+    <Link
+      href={`/actualites/${news.id}`}
+      className="block h-full rounded-md border border-border bg-surface p-4 transition-colors hover:border-foreground"
+    >
+      <h3 className="text-lg font-bold leading-tight">{news.title}</h3>
+      <p className="mt-2 line-clamp-2 text-sm">{news.body}</p>
+      <span className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted">
+        {estNouvelle(news.publishedAt, new Date()) && (
+          <Badge inverted>Nouvelle</Badge>
+        )}
+        <span>{dateComplete(news.publishedAt)}</span>
+      </span>
+    </Link>
   );
 }
+
+export const NewsList = ({
+  news,
+}: {
+  news: Parameters<typeof NewsCard>[0]["news"][];
+}) => (
+  <ul className="grid gap-3 md:grid-cols-2">
+    {news.map((n) => (
+      <li key={n.id}>
+        <NewsCard news={n} />
+      </li>
+    ))}
+  </ul>
+);
 
 export const CalendrierVide = () => (
   <EmptyState

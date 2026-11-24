@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EmptyState, NewsCard } from "@/app/_components/public/Blocs";
+import { EmptyState, NewsList } from "@/app/_components/public/Blocs";
 import { actualites } from "@/lib/public";
 
 export const metadata: Metadata = {
@@ -15,11 +15,7 @@ export default async function Actualites() {
       {news.length === 0 ? (
         <EmptyState title="Aucune actualité pour l'instant" />
       ) : (
-        <div className="space-y-4">
-          {news.map((n) => (
-            <NewsCard key={n.id} news={n} />
-          ))}
-        </div>
+        <NewsList news={news} />
       )}
     </>
   );

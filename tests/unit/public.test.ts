@@ -5,6 +5,7 @@ import {
   choisirSaison,
   correspond,
   diffSignee,
+  estNouvelle,
   heure,
   imageReduite,
   journeeParDefaut,
@@ -75,5 +76,12 @@ describe("site public", () => {
     expect(diffSignee(0)).toBe("0");
     expect(age(new Date("2000-06-15"), new Date("2026-06-14"))).toBe(25);
     expect(age(new Date("2000-06-15"), new Date("2026-06-15"))).toBe(26);
+  });
+
+  it("actualité nouvelle : publiée depuis moins de 7 jours", () => {
+    const now = new Date("2026-11-24T12:00:00Z");
+    expect(estNouvelle(new Date("2026-11-24T08:00:00Z"), now)).toBe(true);
+    expect(estNouvelle(new Date("2026-11-17T12:00:01Z"), now)).toBe(true);
+    expect(estNouvelle(new Date("2026-11-17T12:00:00Z"), now)).toBe(false);
   });
 });

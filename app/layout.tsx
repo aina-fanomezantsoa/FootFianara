@@ -23,10 +23,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        {/* Applique le thème choisi avant le premier affichage (évite le flash). Sombre par défaut. */}
+        {/* Applique le thème choisi avant le premier affichage (évite le flash). Clair par défaut. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{document.documentElement.dataset.theme=localStorage.getItem("theme")==="light"?"light":"dark"}catch(e){}`,
+            __html: `try{document.documentElement.dataset.theme=localStorage.getItem("theme")==="dark"?"dark":"light"}catch(e){}`,
           }}
         />
       </head>

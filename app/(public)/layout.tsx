@@ -10,7 +10,7 @@ export default function PublicLayout({ children }: LayoutProps<"/">) {
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link href="/" className="flex min-h-11 items-center gap-2">
             <span className="rounded-sm bg-white p-0.5">
-              <Image src="/logo.png" alt="" width={32} height={32} priority />
+              <Image src="/logo.webp" alt="" width={32} height={32} priority />
             </span>
             <span className="title-sport text-lg">Foot Fianara</span>
           </Link>

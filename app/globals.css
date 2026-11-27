@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
-/* Palette monochrome : noir, blanc, 3 gris. Mode sombre par défaut ; le clair s'active via data-theme="light" sur <html>. */
+/* Palette monochrome : noir, blanc, 3 gris. Mode clair par défaut ; le sombre s'active via data-theme="dark" sur <html>. */
 :root {
-  color-scheme: dark;
-  --background: #000000;
-  --surface: #111111;
-  --border: #2a2a2a;
-  --muted: #9a9a9a;
-  --foreground: #ffffff;
-}
-
-:root[data-theme="light"] {
   color-scheme: light;
   --background: #ffffff;
   --surface: #f4f4f4;
   --border: #dcdcdc;
   --muted: #666666;
   --foreground: #000000;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #000000;
+  --surface: #111111;
+  --border: #2a2a2a;
+  --muted: #9a9a9a;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -46,6 +46,23 @@ body {
 
 .num {
   font-variant-numeric: tabular-nums;
+}
+
+/* Bandeau d'étiquettes du hero : défile sans fin, en pause au survol ou au toucher.
+   Défile même avec « réduire les animations » : demandé explicitement. */
+.defilement {
+  animation: defilement 40s linear infinite;
+}
+
+.defilement:hover,
+.defilement:active {
+  animation-play-state: paused;
+}
+
+@keyframes defilement {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

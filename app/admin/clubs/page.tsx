@@ -4,6 +4,7 @@ import { Button } from "@/app/_components/ui/Button";
 import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { logoClub } from "@/lib/images";
+import { imageReduite } from "@/lib/public";
 import { creerClub } from "./actions";
 import { ChampsClub } from "./ChampsClub";
 
@@ -27,7 +28,11 @@ export default async function Clubs({
               className="flex min-h-11 items-center gap-3 py-2 hover:underline"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- logos Cloudinary ou SVG local */}
-              <img src={logoClub(c)} alt="" className="size-8 object-contain" />
+              <img
+                src={imageReduite(logoClub(c), 64)}
+                alt=""
+                className="size-8 object-contain"
+              />
               <span className="font-semibold">{c.name}</span>
               <span className="text-muted">{c.shortName}</span>
             </Link>
